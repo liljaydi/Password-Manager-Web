@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/**/
+
+.app {
+    display: flex;
+    background-color: rgb(255, 255, 255);
+}
+
+.sidebar {
+    background-color: rgb(240, 240, 240);
+    padding: 20px;
+    flex-shrink: 0; /*makes the side bar never shrink*/
+    position: sticky; /*when scrolling inside main... side bar never moves*/
+    width: 250px;
+    height: 100vh;
+    top: 0; /*without this sticky won't work, its telling where to stick*/
+}
+
+.main {
+    background-color: rgb(255, 255, 255);
+    padding: 50px;
+    flex: 1; /*takes up all the remaining space after the sidebar*/
+    overflow-y: auto; /*creates a scrollbar when needed*/
+}
+
+.logo {
+    display: flex;
+}
+
+.logoImg {
+    width: 20px;
+    height: 20px;
+}
+
+.logoText {
+    margin-left: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/**/
