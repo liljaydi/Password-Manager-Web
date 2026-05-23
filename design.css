@@ -9,39 +9,67 @@
 .app {
     display: flex;
     background-color: rgb(255, 255, 255);
+    min-height: 100vh;
 }
 
 .sidebar {
-    background-color: rgb(240, 240, 240);
+    background-color: #1a1d27;
     padding: 20px;
     flex-shrink: 0; /*makes the side bar never shrink*/
     position: sticky; /*when scrolling inside main... side bar never moves*/
-    width: 250px;
-    height: 100vh;
+    width: 300px;
     top: 0; /*without this sticky won't work, its telling where to stick*/
 }
 
 .main {
-    background-color: rgb(255, 255, 255);
+    background-color: #0f1117;
     padding: 50px;
     flex: 1; /*takes up all the remaining space after the sidebar*/
     overflow-y: auto; /*creates a scrollbar when needed*/
 }
 
 .logo {
-    display: flex;
+    display: flex; /*to make the logo and "myAccess" be next to each other*/
+    padding: 0px 0px 20px;
 }
 
 .logoImg {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
+    filter: invert(1) sepia(1) saturate(5) hue-rotate(200deg);
 }
 
 .logoText {
     margin-left: 8px;
     font-family: 'Inter', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 700;
+    color: rgb(230, 237, 245);
+}
+
+.sectionLabel {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 10px;
+    font-family: 'Inter', sans-serif;
+    color: #84889e;
+    letter-spacing: 1px;
+}
+
+.sidebar a {
+    padding: 6px 12px;
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #ffff;
+    text-decoration: none;
+    border-radius: 6px;
+    margin-bottom: 4px;
+}
+
+.sidebar a:hover {
+    background-color: #2a2f47;
+    color: #4f8ef7;
 }
 
 /**/
