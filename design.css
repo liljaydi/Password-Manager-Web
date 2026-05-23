@@ -23,7 +23,7 @@
 
 .main {
     background-color: #0f1117;
-    padding: 50px;
+    padding: 20px 50px;
     flex: 1; /*takes up all the remaining space after the sidebar*/
     overflow-y: auto; /*creates a scrollbar when needed*/
 }
@@ -33,21 +33,21 @@
     padding: 0px 0px 20px;
 }
 
-.logoImg {
+.logo-img {
     width: 22px;
     height: 22px;
-    filter: invert(1) sepia(1) saturate(5) hue-rotate(200deg);
+    filter: invert(1);
 }
 
-.logoText {
+.logo-text {
     margin-left: 8px;
     font-family: 'Inter', sans-serif;
     font-size: 20px;
     font-weight: 700;
-    color: rgb(230, 237, 245);
+    color: rgb(255, 255, 255);
 }
 
-.sectionLabel {
+.section-label {
     margin-top: 20px;
     margin-bottom: 10px;
     font-size: 10px;
@@ -70,6 +70,39 @@
 .sidebar a:hover {
     background-color: #2a2f47;
     color: #4f8ef7;
+}
+
+.sidebar a.active {
+    background-color: #1e3a6e;
+    color: #4f8ef7;
+}
+
+.top-navigation {
+    color:rgb(255, 255, 255);
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    white-space: nowrap;
+    margin-bottom: 31px;
+}
+
+.search-bar {
+    margin-top: 1px;
+    margin-left: 1px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: #0f1117;
+    color: white;
+    border: 1px solid #84889e;
+    width: 250px;
+}
+
+.search-bar:focus {
+    margin-top: 0px;
+    margin-left: 0px;
+    outline: none;
+    border: 2px solid #4f8ef7;
+    background-color: #0f1117;
 }
 
 /**/
