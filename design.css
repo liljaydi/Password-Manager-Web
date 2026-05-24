@@ -10,6 +10,7 @@
     display: flex;
     background-color: rgb(255, 255, 255);
     min-height: 100vh;
+    font-family: 'Inter', sans-serif;
 }
 
 .sidebar {
@@ -41,7 +42,6 @@
 
 .logo-text {
     margin-left: 8px;
-    font-family: 'Inter', sans-serif;
     font-size: 20px;
     font-weight: 700;
     color: rgb(255, 255, 255);
@@ -51,7 +51,6 @@
     margin-top: 20px;
     margin-bottom: 10px;
     font-size: 10px;
-    font-family: 'Inter', sans-serif;
     color: #84889e;
     letter-spacing: 1px;
 }
@@ -59,7 +58,6 @@
 .sidebar a {
     padding: 6px 12px;
     display: block;
-    font-family: 'Inter', sans-serif;
     font-size: 14px;
     color: #ffff;
     text-decoration: none;
@@ -77,18 +75,22 @@
     color: #4f8ef7;
 }
 
-.top-navigation {
+.header {
     color:rgb(255, 255, 255);
-    font-family: 'Inter', sans-serif;
     font-size: 20px;
     font-weight: 500;
     white-space: nowrap;
-    margin-bottom: 31px;
+    margin-bottom: 30px;
+}
+
+.search-row {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center
 }
 
 .search-bar {
-    margin-top: 1px;
-    margin-left: 1px;
+    height: 36px;
     padding: 8px 12px;
     border-radius: 8px;
     background-color: #0f1117;
@@ -98,11 +100,46 @@
 }
 
 .search-bar:focus {
-    margin-top: 0px;
-    margin-left: 0px;
-    outline: none;
-    border: 2px solid #4f8ef7;
+    outline: 1px solid #4f8ef7;
     background-color: #0f1117;
+}
+
+.filter {
+    margin-left: 10px;
+    text-decoration: none;
+    color: #84889e;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #84889e;
+}
+
+.filter:hover {
+    margin-left: 10px;
+    background-color: #2a2f47;
+    border: 1px solid #2a2f47;
+    outline: 1px solid #2a2f47;
+    color:#4f8ef7;
+}
+
+.header-line {
+    border: none;
+    border-top: 1px solid #84889e;
+    margin-top: 26px;
+}
+
+.tag {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tag p {
+    color:#84889e;
+    font-size: 14px;
+    padding: 10px;
+    font-weight: 2px;
+    flex: 1;
+    text-align: center;
 }
 
 /**/
