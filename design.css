@@ -161,6 +161,8 @@
 }
 
 .checkbox {
+    visibility: hidden;
+    opacity: 0;
     appearance: none;
     width: 16px;
     height: 16px;
@@ -170,7 +172,14 @@
     margin-right: 16px;
 }
 
+.account-row:hover .checkbox {
+    visibility: visible;
+    opacity: 1;
+}
+
 .checkbox:checked {
+    visibility: visible;
+    opacity: 1;
     background-color: #4f8ef7;
     border-color: #4f8ef7;
 }
@@ -192,7 +201,6 @@
     font-weight: 100;
 }
 
-
 .username,
 .date {
     color: #84889e;
@@ -210,6 +218,16 @@
 }
 
 .selected {
+    background-color: #1a1f30;
+    box-shadow: inset 0 -1px 0 #84889e;
+}
+
+.selected .checkbox {
+    visibility: visible;
+    opacity: 1;
+}
+
+.checked-selected {
     background-color: #2a2f47;
     box-shadow: inset 0 -1px 0 #84889e;
 }
