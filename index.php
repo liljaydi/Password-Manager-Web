@@ -4,49 +4,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="styles.css">
+
     <title>Password Manager</title>
 </head>
 
 <body>
     <div class="container">
         <div class="container-left">
-            <h1>Every password.<br>One secure home.</h1>
-            <p>myAccess keeps your logins organized encrypted and a<br>
-            single tap away - across every device you own.</p>
-
-            <div class="feature-info">
-                <div>
-                    <h3>End-to-end encrypted</h3>
-                    <p>Your vault is sealed with zero knowledge encryption.</p>
+            <div>
+                <div class="logo">
+                    <div class="logo-img">
+                        <img src="assets/car-key.svg" alt="myAccess Logo">
+                    </div>
+                    <p>myAccess</p>
                 </div>
-            </div>
 
-            <div class="feature-info">
-                <div>
-                    <h3>One key to rule them</h3>
-                    <p>A single master password unlocks every login.</p>
-                </div>
-            </div>
+                <h1>Every password.<br>One secure home.</h1>
+                <p class="header-description">myAccess keeps your logins organized encrypted and a
+                single tap away - across every device you own.</p>
 
-            <div class="feature-info">
-                <div>
-                    <h3>Breach monitoring</h3>
-                    <p>Get alerted the moment a password is exposed</p>
+                <div class="feature-info">
+                    <div class="icon-box">
+                        <img class="icon" src="assets/lock.svg" alt="error">
+                    </div>
+                    <div>
+                        <h3>End-to-end encrypted</h3>
+                        <p class="info">Your vault is sealed with zero knowledge encryption.</p>
+                    </div>
                 </div>
-            </div>
+
+                <div class="feature-info">
+                    <div class="icon-box">
+                        <img class="icon" src="assets/fingerprint.svg" alt="error">
+                    </div>
+                    <div>
+                        <h3>One key to rule them</h3>
+                        <p class="info">A single master password unlocks every login.</p>
+                    </div>
+                </div>
+
+                <div class="feature-info">
+                    <div class="icon-box">
+                        <img class="icon" src="assets/check-shield.svg" alt="error">
+                    </div>
+                    <div>
+                        <h3>Breach monitoring</h3>
+                        <p class="info">Get alerted the moment a password is exposed</p>
+                    </div>
+                </div>
+            </div>  
         </div>
 
         <div class="container-right">
-            <div class="auth-btns">
-                <button class="login-btn">Log in</button>
-                <button class="signup-btn">Sign up</button>
-            </div>
-            
             <div class="auth-panel">
+                <div class="auth-btns-container">
+                    <div class="auth-btns">
+                        <button class="login-btn">Log in</button>
+                        <button class="signup-btn">Sign up</button>
+                    </div>
+                </div>
+
                 <form class="login-form">
                     <h1>Welcome back</h1>
-                    <p>Enter your details to unlock your vault.</p>
+                    <p class="auth-description">Enter your details to unlock your vault.</p>
 
                     <label>Email</label>
                     <input class="login-email" name="email" type="text" placeholder="you@example.com">
@@ -60,11 +86,12 @@
 
                     <input class="login-submit" type="submit" value="Unlock vault">
 
-                    <p>New to myAccess? <span class="signup-link">Create one</span></p>
+                    <p class="link">New to myAccess?<span class="signup-link">Create one</span></p>
                 </form>
+                
                 <form class="signup-form">
                     <h1>Create your account</h1>
-                    <p>Set up your vault in under a minute.</p>
+                    <p class="auth-description">Set up your vault in under a minute.</p>
 
                     <label>Full name</label>
                     <input class="signup-name" name="name" type="text" placeholder="Your full name">
@@ -86,7 +113,7 @@
 
                     <input class="signup-submit" type="submit" value="Create account">
 
-                    <p>Already have an account? <span class="login-link">Log in</span></p>
+                    <p class="link">Already have an account?<span class="login-link">Log in</span></p>
                 </form>
             </div>
         </div>

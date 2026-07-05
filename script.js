@@ -1,5 +1,9 @@
 // set login as default authentication 
 const authPanel = document.querySelector('.auth-panel');
+const loginBtn = document.querySelector('.login-btn');
+const signupBtn = document.querySelector('.signup-btn');
+
+loginBtn.classList.add('active');
 authPanel.classList.add('login-mode');
 
 // switching login and signup
@@ -14,28 +18,32 @@ loginButton.addEventListener('click', loginMode);
 signupButton.addEventListener('click', signupMode);
 
 function loginMode() {
+    clearErrorMessage();
+    
     authPanel.classList.add('login-mode');
     authPanel.classList.remove('signup-mode');
+
+    loginBtn.classList.add('active');
+    signupBtn.classList.remove('active');
 }
 
 function signupMode() {
-    clearLoginInput();
-    clearLoginErrorMessage();
+    clearErrorMessage();
 
     authPanel.classList.add('signup-mode');
     authPanel.classList.remove('login-mode');
+
+    signupBtn.classList.add('active');
+    loginBtn.classList.remove('active');
 }
 
 // clear login error message
-function clearLoginErrorMessage() {
+function clearErrorMessage() {
     loginEmailEmpty.classList.remove('show');
     loginPasswordEmpty.classList.remove('show');
     loginEmailInvalid.classList.remove('show');
     loginPasswordIncorrect.classList.remove('show');
-}
 
-// clear signup error message
-function clearSignupErrorMessage() {
     signupNameEmpty.classList.remove('show');
     signupEmailEmpty.classList.remove('show');
     signupPasswordEmpty.classList.remove('show');
@@ -44,14 +52,11 @@ function clearSignupErrorMessage() {
     signupDuplicateAccount.classList.remove('show');
 }
 
-// clear login input
-function clearLoginInput() {
+// clear input
+function clearInput() {
     loginEmail.value = "";
     loginPassword.value = "";
-}
 
-// clear signup Input
-function clearSignupInput() {
     signupName.value = "";
     signupEmail.value = "";
     signupPassword.value = "";
@@ -76,7 +81,7 @@ const loginPassword = document.querySelector('.login-password');
 
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    clearLoginErrorMessage();
+    clearErrorMessage();
 
     const email = loginEmail.value;
     const password = loginPassword.value;
@@ -108,7 +113,7 @@ loginForm.addEventListener('submit', (e) => {
             return;
         } else if (data === "login successful") {
             window.location = "dashboard.php";
-            clearLoginInput();
+            clearInput();
         } else return;
     });
 
@@ -136,7 +141,7 @@ const signupConfirmPassword = document.querySelector('.signup-confirm-password')
 
 signupForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    clearSignupErrorMessage();
+    clearErrorMessage();
 
     const name = signupName.value;
     const email = signupEmail.value;
@@ -178,7 +183,7 @@ signupForm.addEventListener('submit', (e) => {
             return;
         } else if (data === "signup successful") {
             window.location = "dashboard.php";
-            clearSignupInput();
+            clearInput();
         } else if (data === "signup unsuccessful") return;
         else return;
     });

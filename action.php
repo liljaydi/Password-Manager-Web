@@ -1,7 +1,9 @@
 <?php
 
+session_start();
 require_once "config.php";
 
+// get action from POST request
 $action = $_POST['action'] ?? '';
 
 // check what action is requested
@@ -12,6 +14,8 @@ if ($action == "login") {
     login();
 } else if ($action == "signup") {
     signup();
+} else if ($action == "addAccount") {
+    addAccount();
 }
 
 // validate login
@@ -28,8 +32,12 @@ function login() {
     if (!$user) {
         echo "account does not exist";
     } else {
-        if ($user['password'] == $password) echo "login successful";
-        else echo "incorrect password";
+        if ($user['password'] == $password) {
+            $_SESSION['userId'] = $user['id'];
+            echo "login successful";
+        } else {
+            echo "incorrect password";
+        }
     }
 }
 
@@ -55,8 +63,40 @@ function signup() {
 
     $result = mysqli_query($conn, $addUser);
 
-    if ($result) echo "signup successful";
-    else echo "signup unsuccessful";
+    if ($result) {
+        $_SESSION['userId'] = mysqli_insert_id($conn);
+        echo "signup successful";
+    } else {
+        echo "signup unsuccessful";
+    }
+}
+
+function addAccount() {
+    global $conn;
+
+    if (!isset($_SESSION['userId'])) {
+        echo "not logged in";
+        return;
+    }
+    
+    $userId = $_SESSION['userId'];
+    $title = $_POST['title'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $url = $_POST['url'];
+    $notes = $_POST['notes'];
+
+    $addAccount = "INSERT INTO credentials (user_id, title, username, password, url, notes)
+    VALUES ('$userId', '$title', '$username', '$password', '$url', '$notes')";
+
+    $result = mysqli_query($conn, $addAccount);
+
+    if ($result) {
+        echo "account added successfully";
+    } else {
+        echo "add account unsuccessful";
+    }
+
 }
 
 ?>

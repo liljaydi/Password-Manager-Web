@@ -1,17 +1,273 @@
 :root {
+    --sidebar: oklch(18% .013 265);
+    --background: oklch(16% .012 265);
+    --foreground: oklch(97% .004 260);
+    --muted-foreground: oklch(66% .02 265);
+
+    --primary: oklch(62% .17 268);
+    --accent: oklch(27% .025 268);
+    --card: oklch(20% .014 265);
+    --border: oklch(28% .014 265);
+
     --destructive: oklch(62% .21 25);
+
+    --text-xs: 0.75rem;    /* 12px */
+    --text-sm: 0.875rem;   /* 14px */
+    --text-base: 1rem;     /* 16px */
+    --text-lg: 1.125rem;   /* 18px */
+    --text-xl: 1.25rem;    /* 20px */
+    --text-2xl: 1.5rem;    /* 24px */
+    --text-3xl: 1.875rem;  /* 30px */
+    --text-4xl: 2.25rem;   /* 36px */
+
+    --space-xxs: 0.25rem;  /* 4px */
+    --space-xs: 0.5rem;    /* 8px */
+    --space-s: 1rem;       /* 16px */
+    --space-m: 1.5rem;     /* 24px */
+    --space-l: 2rem;       /* 32px */
+    --space-xl: 3rem;      /* 48px */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Mona Sans", sans-serif;
+    color: var(--foreground);
+    background-color: var(--background);
 }
 
 .container {
     display: flex;
-    height: 100vh;
-
-    align-items: center;
-    justify-content: space-around;
+    height: calc(100vh + 120px);
 }
+
+/*===================================
+
+container left - myAccess information
+
+===================================*/
+
+.container-left {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    min-width: 380px;
+    overflow-y: hidden;
+
+    background: 
+    radial-gradient(
+        600px at 20% 0%,
+        oklch(0.62 0.17 268 / 0.18),
+        transparent 60%
+    ),
+    radial-gradient(
+        500px at 90% 100%,
+        oklch(0.7 0.14 200 / 0.12),
+        transparent 55%
+    ), var(--sidebar);
+}
+
+/* logo myAccess */
+
+.container-left .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--space-xl);
+}
+
+.container-left .logo-img {
+    background-color: var(--primary);
+    padding: 6px;
+    border-radius: 17px;
+    height: 38px;
+    width: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-left .logo p {
+    color: var(--foreground);
+    font-size: var(--text-xl);
+    font-weight: 600;
+}
+
+/* header */
+
+.container-left h1 {
+    font-size: var(--text-4xl);
+    font-weight: 600;
+    margin-bottom: var(--space-xs);
+}
+
+/* below header */
+
+.container-left .header-description {
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-l);
+    max-width: 400px;
+    color: var(--muted-foreground);
+}
+
+/* feature info */
+
+.feature-info {
+    margin-bottom: var(--space-m);
+    display: flex;
+    align-items: center;
+}
+
+.feature-info .icon-box {
+    border-radius: 14px;
+    height: 36px;
+    min-width: 36px;
+    margin-right: 14px;
+
+    background-color: var(--accent);
+}   
+
+.feature-info .icon {
+    margin-left: 7px;
+    margin-top: 7px;
+    height: 22px;
+}
+
+.container-left h3 {
+    font-size: var(--text-base);
+    font-weight: 500;
+    margin-bottom: var(--space-xxs);
+}
+
+.container-left .info {
+    font-size: var(--text-sm);
+    color: var(--muted-foreground);
+}
+
+/*==============================
+
+container right - authentication
+
+==============================*/
+
+.container-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    overflow-y: hidden;
+
+    background-color: var(--background);
+}
+
+.auth-panel form {
+    min-width: 300px;
+}
+
+/* toggle buttons */
+
+.auth-btns-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--space-l);
+}
+
+.auth-btns {
+    display: flex;
+    border-radius: 22px;
+    padding: 4px;
+    width: 168px;
+    border: 1px solid var(--border);
+
+    background-color: var(--card);
+}
+
+.login-btn, 
+.signup-btn {
+    display: block;
+    border: none;
+    border-radius: 18px;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    padding: 8px;
+    width: 80px;
+
+    background-color: transparent;
+    color: var(--muted-foreground);
+}
+
+.login-btn:hover,
+.signup-btn:hover {
+    color: var(--foreground);
+}
+
+.login-btn.active {
+    background-color: var(--primary);
+    color: var(--foreground);
+}
+
+.signup-btn.active {
+    background-color: var(--primary);
+    color: var(--foreground);
+}
+
+/* header */
+
+.auth-panel h1 {
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    margin-bottom: var(--space-xxs);
+}
+
+/* below header */
+
+.auth-description {
+    color: var(--muted-foreground);
+    margin-bottom: var(--space-m);
+    font-size: var(--text-sm);
+}
+
+/* label */
+
+.auth-panel label {
+    display: block;
+    color: var(--muted-foreground);
+    font-size: var(--text-xs);
+    margin-top: var(--space-s);
+    margin-bottom: var(--space-xxs);
+}
+
+/* input box */
 
 .auth-panel input {
     display: block;
+    min-width: 300px;
+    border: 1px solid var(--border);
+    background-color: var(--card);
+    padding: 10px 14px;
+    border-radius: 18px;
+    color: var(--foreground);
+}
+
+/* toggle link */
+
+.auth-panel .link {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+}
+
+.auth-panel .login-submit,
+.auth-panel .signup-submit {
+    margin-top: 34px;
+    margin-bottom: 20px;
+    background-color: var(--primary);
+    border: none;
 }
 
 .auth-panel.login-mode .signup-form {
@@ -22,8 +278,14 @@
     display: none;
 }
 
+.auth-panel .link {
+    font-size: var(--text-sm);
+    color: var(--muted-foreground);
+}
+
 .login-form .signup-link {
     cursor: pointer;
+    color: var(--primary);
 }
 
 .login-form .signup-link:hover {
@@ -32,6 +294,7 @@
 
 .signup-form .login-link {
     cursor: pointer;
+    color: var(--primary);
 }
 
 .signup-form .login-link:hover {
@@ -42,8 +305,10 @@
 .login-email-invalid,
 .login-password-empty,
 .login-password-incorrect {
+    margin-top: var(--space-xxs);
     display: none;
     color: var(--destructive);
+    font-size: var(--text-sm);
 }
 
 .login-email-empty.show {
@@ -68,8 +333,10 @@
 .signup-confirm-password-empty,
 .signup-confirm-password-mismatch,
 .signup-duplicate-account {
+    margin-top: var(--space-xxs);
     display: none;
     color: var(--destructive);
+    font-size: var(--text-sm);
 }
 
 .signup-name-empty.show {
