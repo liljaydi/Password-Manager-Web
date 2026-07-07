@@ -254,6 +254,10 @@ container right - authentication
     color: var(--foreground);
 }
 
+.auth-panel input:focus {
+    outline: 1px solid var(--primary);
+}
+
 /* toggle link */
 
 .auth-panel .link {

@@ -92,11 +92,16 @@ function addAccount() {
     $result = mysqli_query($conn, $addAccount);
 
     if ($result) {
-        echo "account added successfully";
-    } else {
-        echo "add account unsuccessful";
-    }
+        $newId = mysqli_insert_id($conn);
 
+        $initial = mb_substr($title, 0, 2);
+
+        echo json_encode([
+            "success" => true,
+            "id" => $newId,
+            "initial" => $initial
+        ]);
+    } 
 }
 
 ?>

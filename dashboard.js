@@ -40,7 +40,7 @@ const urlInput = document.querySelector('.url');
 const notesInput = document.querySelector('.notes');
 
 // confirm add account
-const saveButton = document.querySelector('.input-container');
+const saveButton = document.querySelector('.add-form');
 const cancelButton = document.querySelector('.confirm-add .cancel');
 
 // blank required input
@@ -103,27 +103,38 @@ saveButton.addEventListener('submit', (e) => {
         method: "POST",
         body: formdata
     })
-    .then (res => res.text())
+    .then (res => res.json())
     .then (data => {
-        if (data === "account added successfully") {
+        if (data.success) {
 
             const row = document.createElement('div');
             
+            row.dataset.id = data.id;
             row.classList.add('account-row');
             row.innerHTML = `
-                <div class="account-img"></div>
+                <p class="account-img">${data.initial.toUpperCase()}</p>
                 <div>
                     <p class='row-title'>${titleInput.value}</p>
                     <p class='row-username'>${usernameInput.value}</p>
                 </div>
             `
             document.querySelector('.account-list').appendChild(row);
+
+            row.addEventListener('click', () => {
+                if (previousId === row.dataset.id) {
+                    closeCredential(row.dataset.id);
+                    previousId = null;
+                    return;
+                }
+
+                previousId = row.dataset.id;
+                openCredential(row.dataset.id, row);
+            });
             
             clearInputData();
             closeAddPanel();
             hideEmptyState();
-        }
-        else {
+        } else {
             console.log("failed to add account");
         };
     });
@@ -165,23 +176,126 @@ function hideEmptyState() {
 
 ======================================*/
 const sidebar = document.querySelector('nav');
-const sidebarToggle = document.querySelector('.sidebar-toggle');
+
+const toggleLeft = document.querySelector('.toggle-left');
+const toggleRight = document.querySelector('.toggle-right');
+
+toggleLeft.classList.add('show');
+toggleRight.classList.remove('show');
+
 const logoImg = document.querySelector('.nav-heading .logo-img');
 const logoName = document.querySelector('.nav-heading p');
 const navigationLabel = document.querySelectorAll('.sidebar-content a span');
 const mainHeading = document.getElementById('main-heading');
+
+// credential container
 const accountList = document.querySelector('.account-list');
 
-sidebarToggle.addEventListener('click', () => {
-    sidebar.classList.toggle('hide');
-    logoImg.classList.toggle('hide');
-    logoName.classList.toggle('hide');
+toggleLeft.addEventListener('click', navClose);
+toggleRight.addEventListener('click', navOpen);
+
+function navClose() {
+    sidebar.classList.add('hide');
+    logoImg.classList.add('hide');
+    logoName.classList.add('hide');
     
     navigationLabel.forEach((label) => {
-        label.classList.toggle('hide');
+        label.classList.add('hide');
     })
 
-    mainHeading.classList.toggle('expanded');
-    accountList.classList.toggle('expanded');
-    emptyState.classList.toggle('expanded');
+    mainHeading.classList.add('expanded');
+    toggleLeft.classList.remove('show');
+    toggleRight.classList.add('show');
+
+    // credential container
+    accountList.classList.add('expanded');
+
+    if (credentialOpen) {
+        accountList.classList.remove('close');
+        accountList.classList.add('open');
+    } else {
+        accountList.classList.remove('open');
+        accountList.classList.add('close');
+    }
+}
+
+function navOpen() {
+    sidebar.classList.remove('hide');
+    logoImg.classList.remove('hide');
+    logoName.classList.remove('hide');
+    
+    navigationLabel.forEach((label) => {
+        label.classList.remove('hide');
+    })
+
+    mainHeading.classList.remove('expanded');
+    toggleLeft.classList.add('show');
+    toggleRight.classList.remove('show');
+
+    // credential container
+    accountList.classList.remove('expanded');
+
+    if (credentialOpen) {
+        accountList.classList.remove('close');
+        accountList.classList.add('open');
+    } else {
+        accountList.classList.remove('open');
+        accountList.classList.add('close');
+    }
+}
+
+/*==============================
+
+    open credentials details
+
+==============================*/
+
+const accountRow = document.querySelectorAll('.account-row');
+const credentialsContainer = document.querySelector('#credentials-container');
+
+let credentialOpen = false;
+
+let previousId = null;
+
+accountRow.forEach((row) => {
+    row.addEventListener('click', () => {
+
+        accountRow.forEach((row) => {
+            row.classList.remove('highlight');
+        });
+
+        if (previousId === row.dataset.id) {
+            closeCredential(row.dataset.id);
+            previousId = null;
+            return;
+        }
+
+        previousId = row.dataset.id;
+        openCredential(row.dataset.id, row);
+    })
 })
+
+function openCredential(id, row) {
+    console.log(id);
+    credentialsContainer.classList.add('flex');
+    accountList.classList.add('open');
+    accountList.classList.remove('close');
+    credentialOpen = true;
+
+    row.classList.add('highlight');
+
+    const info = document.createElement('div');
+    info.classList.add('credential-content');
+
+    info.innerHTML = `
+        
+    `
+}
+
+function closeCredential(id) {
+    console.log(id);
+    credentialsContainer.classList.remove('flex');
+    accountList.classList.remove('open'); // don't mind why i did not add 'close' "just dont change anything"
+
+    credentialOpen = false;
+}

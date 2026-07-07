@@ -106,7 +106,9 @@ main {
 }
 
 /* opens and closes the sidebar */
-.sidebar-toggle {
+.toggle-left, 
+.toggle-right {
+    display: none;
     position: absolute;
     right: 0px;
     height: 37px;
@@ -115,7 +117,16 @@ main {
     border-radius: 12px;
 }
 
-.sidebar-toggle:hover {
+.toggle-left.show {
+    display: block;
+}
+
+.toggle-right.show {
+    display: block;
+}
+
+.toggle-left.show:hover,
+.toggle-right.show:hover {
     background-color: var(--accent);
 }
 
@@ -186,7 +197,7 @@ nav .active {
     align-items: center;
     gap: 14px;
     background-color: var(--background);
-    padding: var(--space-xl) 40px var(--space-m);
+    padding: var(--space-xl) var(--space-l) var(--space-m);
 
     transition: padding 0.2s ease;
 }
@@ -413,7 +424,7 @@ nav .active {
 
 #add-panel .optional {
     margin-left: 4px;
-    font-size: 10px;
+    font-size: var(--text-xs);
     letter-spacing: 0.2px;
 }
 
@@ -490,33 +501,59 @@ nav .active {
 
 ===================================*/
 
-#credentials-container {
-    overflow-y: auto;
-}
-
-/* account added displayed in list */
-.account-list {
-    margin: 0px 40px;
-    min-width: 500px;
-
-    transition: margin 0.2s ease;
-}
-
-.account-list.open {
+#credentials-container.flex {
     display: flex;
 }
 
-.account-list.expanded {
-    margin: 0px 120px;
-    min-width: 500px;
+#credentials-container.flex .credential-panel {
+    display: block;
 }
+
+.credential-panel {
+    display: none;
+    background-color: var(--sidebar);
+    min-width: 400px;
+    height: calc(100vh - 108px);
+    margin-right: var(--space-l);
+
+    border-radius: 14px;
+    padding: var(--space-s);
+}
+
+/* account added displayed in list */
+
+.account-list {
+    overflow-y: auto;
+    max-height: calc(100vh - 108px);
+    padding: 1px var(--space-l) 0px;
+}
+
+.account-list.expanded {
+    padding: 1px 120px 0px;
+}
+
+.account-list.close {
+    transition: padding 0.2s ease;
+}
+
+.account-list.open {
+    flex: 1;
+    transition: padding-left 0.2s ease;
+}
+
+.account-list.close.expanded {
+    padding: 1px 120px 0px;
+}
+
+.account-list.open.expanded {
+    padding-left: 120px;
+    padding-right: var(--space-l);
+}
+
+/* main heading */
 
 #main-heading.expanded {
     padding: var(--space-xl) 120px var(--space-m);
-}
-
-.empty-state.expanded {
-    margin: 20px 120px;
 }
 
 .account-list .account-row {
@@ -532,22 +569,17 @@ nav .active {
     cursor: pointer;
 }
 
+.account-list .account-row.highlight {
+    outline: 1px solid var(--primary);
+    background-color: oklch(61.688% 0.17129 268.272 / 0.05);
+}
+
+.account-list .account-row.highlight:hover {
+    background-color: oklch(61.688% 0.17129 268.272 / 0.05);
+}
+
 .account-list .account-row:hover {
     background-color: oklch(from var(--card) calc(l + 0.01) c h);
-}
-
-.account-row:hover input {
-    background-color: oklch(from var(--card) calc(l + 0.01) c h);
-}
-
-.account-row input {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    background-color: var(--card);
-    border: 1px solid #2a2a2f;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
 .account-row .row-title {
@@ -560,8 +592,12 @@ nav .active {
 }
 
 .account-img {
-    width: 32px;
-    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    font-weight: 500;
     background-color: var(--accent);
     border-radius: 50%;
 }

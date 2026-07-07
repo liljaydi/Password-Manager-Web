@@ -40,7 +40,8 @@ $result = mysqli_query($conn, $getCredentials);
                     <img class="logo" src="assets/car-key-blue.svg" alt="Error">
                 </div>
                 <p>myAccess</p>
-                <img class="sidebar-toggle" src="assets/chevron-left-square.svg" alt="Error">
+                <img class="toggle-left" src="assets/chevron-left-square.svg" alt="Error">
+                <img class="toggle-right" src="assets/chevron-right-square.svg" alt="Error">
             </div>
 
             <div class="sidebar-content">
@@ -78,21 +79,25 @@ $result = mysqli_query($conn, $getCredentials);
             </div>
             
             <div id="credentials-container">
+                
+                <div class="empty-state <?= mysqli_num_rows($result) > 0 ? 'hide' : '' ?>">
+                    <img src="assets/password.svg" alt="Error">
+                    <h3>No passwords saved yet</h3>
+                    <p>Add your first account to keep your credentials safe</p>
+
+                    <button class='add-button'>Add New Password</button>
+                </div>
+
                 <!-- displays account added -->
                 <div class="account-list">
-                    <div class="empty-state <?= mysqli_num_rows($result) > 0 ? 'hide' : '' ?>">
-                        <img src="assets/password.svg" alt="Error">
-                        <h3>No passwords saved yet</h3>
-                        <p>Add your first account to keep your credentials safe</p>
-
-                        <button class='add-button'>Add New Password</button>
-                    </div>
 
                     <?php
                     while ($credential = mysqli_fetch_assoc($result)) {
+                        $initial = strtoupper(mb_substr($credential['title'], 0, 2));
+
                         echo "
-                            <div class='account-row'>
-                                <div class='account-img'></div>
+                            <div class='account-row' data-id='{$credential['id']}'>
+                                <div class='account-img'>$initial</div>
                                 <div>
                                     <p class='row-title'>{$credential['title']}</p>
                                     <p class='row-username'>{$credential['username']}</p>
@@ -103,6 +108,9 @@ $result = mysqli_query($conn, $getCredentials);
                     ?>
                     
                 </div>
+
+                <div class="credential-panel"></div>
+
             </div>
         </main>
 
@@ -113,7 +121,7 @@ $result = mysqli_query($conn, $getCredentials);
             <h3>Add New Password</h3>
             <p class="sub-txt">Fill in the details for your new password</p>
 
-            <form class="input-container">
+            <form class="add-form">
                 <!-- title -->
                 <label>
                     TITLE<span class="required-dot">*</span>
@@ -148,7 +156,7 @@ $result = mysqli_query($conn, $getCredentials);
                 <textarea name="notes" class="notes" placeholder="any additional notes..."></textarea>
 
                 <div class="confirm-add">
-                    <button class="cancel">Cancel</button>
+                    <button type="button" class="cancel">Cancel</button>
                     <button type="submit" class="save">Save Password</button>
                 </div>
             </form>
