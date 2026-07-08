@@ -14,8 +14,10 @@ if ($action == "login") {
     login();
 } else if ($action == "signup") {
     signup();
-} else if ($action == "addAccount") {
-    addAccount();
+} else if ($action == "addCredential") {
+    addCredential();
+} else if ($action == "getCredential") {
+    getCredential();
 }
 
 // validate login
@@ -71,7 +73,8 @@ function signup() {
     }
 }
 
-function addAccount() {
+
+function addCredential() {
     global $conn;
 
     if (!isset($_SESSION['userId'])) {
@@ -102,6 +105,30 @@ function addAccount() {
             "initial" => $initial
         ]);
     } 
+}
+
+// return full credential
+function getCredential() {
+    global $conn;
+    $id = $_POST['id'];
+    $userId = $_SESSION['userId'];
+
+    $getCredential = "SELECT * FROM credentials WHERE id = '$id' AND user_id = '$userId'";
+
+    $result = mysqli_query($conn, $getCredential);
+    $credential = mysqli_fetch_assoc($result);
+
+    if ($credential) {
+        echo json_encode([
+            "success" => true,
+            "initial" => strtoupper(mb_substr($credential['title'], 0, 2)),
+            "title" => $credential['title'],
+            "username" => $credential['username'],
+            "password" => $credential['password'],
+            "url" => $credential['url'],
+            "notes" => $credential['notes']
+        ]);
+    }
 }
 
 ?>

@@ -109,7 +109,11 @@ $result = mysqli_query($conn, $getCredentials);
                     
                 </div>
 
-                <div class="credential-panel"></div>
+                <div class="credential-panel">
+                    <img class="close-credential-btn" src="assets/x-muted.svg" alt="Error">
+
+                    <div class="credential-content"></div>
+                </div>
 
             </div>
         </main>

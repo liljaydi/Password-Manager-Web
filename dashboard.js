@@ -92,7 +92,7 @@ saveButton.addEventListener('submit', (e) => {
     }
 
     const formdata = new FormData();
-    formdata.append("action", "addAccount");
+    formdata.append("action", "addCredential");
     formdata.append("title", titleInput.value);
     formdata.append("username", usernameInput.value);
     formdata.append("password", passwordInput.value);
@@ -121,12 +121,19 @@ saveButton.addEventListener('submit', (e) => {
             document.querySelector('.account-list').appendChild(row);
 
             row.addEventListener('click', () => {
+                
+                document.querySelectorAll('.account-row').forEach((row) => {
+                    row.classList.remove('highlight');
+                    const credentialContent = document.querySelector('.credential-content');
+                    credentialContent.innerHTML = '';
+                });
+
                 if (previousId === row.dataset.id) {
-                    closeCredential(row.dataset.id);
+                    closeCredential(row.dataset.id, row);
                     previousId = null;
                     return;
                 }
-
+                
                 previousId = row.dataset.id;
                 openCredential(row.dataset.id, row);
             });
@@ -206,6 +213,7 @@ function navClose() {
     mainHeading.classList.add('expanded');
     toggleLeft.classList.remove('show');
     toggleRight.classList.add('show');
+    emptyState.classList.add('expanded');
 
     // credential container
     accountList.classList.add('expanded');
@@ -231,6 +239,7 @@ function navOpen() {
     mainHeading.classList.remove('expanded');
     toggleLeft.classList.add('show');
     toggleRight.classList.remove('show');
+    emptyState.classList.remove('expanded');
 
     // credential container
     accountList.classList.remove('expanded');
@@ -260,12 +269,14 @@ let previousId = null;
 accountRow.forEach((row) => {
     row.addEventListener('click', () => {
 
-        accountRow.forEach((row) => {
+        document.querySelectorAll('.account-row').forEach((row) => {
             row.classList.remove('highlight');
+            const credentialContent = document.querySelector('.credential-content');
+            credentialContent.innerHTML = '';
         });
 
         if (previousId === row.dataset.id) {
-            closeCredential(row.dataset.id);
+            closeCredential(row.dataset.id, row);
             previousId = null;
             return;
         }
@@ -276,26 +287,79 @@ accountRow.forEach((row) => {
 })
 
 function openCredential(id, row) {
-    console.log(id);
+    const formdata = new FormData();
+
+    formdata.append("action", "getCredential");
+    formdata.append("id", id);
+
+    fetch("action.php", {
+        method: "POST",
+        body: formdata
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            renderCredential(data);
+        } else {
+            console.log("failed");
+            return;
+        }
+    })
+
     credentialsContainer.classList.add('flex');
     accountList.classList.add('open');
     accountList.classList.remove('close');
     credentialOpen = true;
 
     row.classList.add('highlight');
-
-    const info = document.createElement('div');
-    info.classList.add('credential-content');
-
-    info.innerHTML = `
-        
-    `
 }
 
-function closeCredential(id) {
-    console.log(id);
+function renderCredential(data) {
+    const credentialContent = document.querySelector('.credential-content');
+
+    let html = `
+        <div class="credential-img">${data.initial}</div>
+        <h2 class="credential-title">${data.title}</h2>
+
+        <div class="data-display">
+            <p class="label">Username</p>
+            <p>${data.username}</p>
+        </div>
+
+        <div class="data-display">
+            <p class="label">Password</p>
+            <p>${data.password}</p>
+        </div>
+    `;
+
+    if (data.url) {
+        html += `
+            <div class="data-display">
+                <p class="label">URL</p>
+                <p>${data.url}</p>
+            </div>
+        `;
+    }
+
+    if (data.notes) {
+        html += `
+            <div class="data-display">
+                <p class="label">Notes</p>
+                <p>${data.notes}</p>
+            </div>
+        `;
+    }
+
+    credentialContent.innerHTML = html;
+}
+
+function closeCredential(id, row) {
     credentialsContainer.classList.remove('flex');
     accountList.classList.remove('open'); // don't mind why i did not add 'close' "just dont change anything"
 
     credentialOpen = false;
+    row.classList.remove('highlight');
+
+    const credentialContent = document.querySelector('.credential-content');
+    credentialContent.innerHTML = '';
 }

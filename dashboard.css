@@ -9,7 +9,7 @@
     --primary: oklch(0.62 0.17 268);
     --primary-foreground: oklch(0.99 0.002 260);
 
-    --muted-foreground: oklch(0.66 0.02 265);
+    --muted-foreground: oklch(65.929% 0.02056 265.939);
 
     --card: oklch(20% .014 265);
 
@@ -255,6 +255,7 @@ nav .active {
     align-items: center;
     justify-content: center;
     height: calc(100vh - 228px);
+    margin: 0px var(--space-l);
 
     transition: margin 0.2s ease;
 }
@@ -289,6 +290,10 @@ nav .active {
 
 .empty-state.hide {
     display: none;
+}
+
+.empty-state.expanded {
+    margin: 0px 120px;
 }
 
 /* add panel hidden */
@@ -511,13 +516,15 @@ nav .active {
 
 .credential-panel {
     display: none;
-    background-color: var(--sidebar);
+    background-color: oklch(from var(--sidebar) calc(l - 0.01) c h);
     min-width: 400px;
     height: calc(100vh - 108px);
     margin-right: var(--space-l);
+    position: relative;
+    border: 1px solid #2a2a2f;
+    overflow-y: auto;
 
     border-radius: 14px;
-    padding: var(--space-s);
 }
 
 /* account added displayed in list */
@@ -584,20 +591,71 @@ nav .active {
 
 .account-row .row-title {
     font-size: var(--text-sm);
+    white-space: nowrap;
 }
 
 .account-row .row-username {
     font-size: var(--text-xs);
     color: #8a8a9a;
+    white-space: nowrap;
 }
 
 .account-img {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 40px;
-    width: 40px;
+    min-height: 40px;
+    min-width: 40px;
     font-weight: 500;
     background-color: var(--accent);
     border-radius: 50%;
+}
+
+.credential-content {
+    margin-top: var(--space-l);
+}
+
+.credential-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 175px;
+    min-height: 50px;
+    min-width: 50px;
+    font-weight: 500;
+    border-radius: 50%;
+    background-color: var(--primary);
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-xs);
+
+}
+
+.credential-title {
+    display: flex;
+    justify-content: center;
+    font-weight: 500;
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-m);
+}
+
+.close-credential-btn {
+    position: absolute;
+    top: var(--space-s);
+    right: var(--space-s);
+}
+
+.data-display {
+    width: auto;
+    background-color: var(--card);
+    margin: 0px var(--space-m) var(--space-s);
+    padding: 10px var(--space-s);
+    border-radius: 14px;
+    border: 1px solid #2a2a2f;
+    font-size: var(--text-sm);
+}
+
+.credential-content .label {
+    color: var(--muted-foreground);
+    font-size: var(--text-xs);
+    margin-bottom: 2px;
 }
