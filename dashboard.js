@@ -354,6 +354,9 @@ function resetClick() {
         row.classList.remove('highlight');
         const credentialContent = document.querySelector('.credential-content');
         credentialContent.innerHTML = '';
+
+        const btn = row.querySelector('.action-menu-btn');
+        btn.classList.remove('show');
     });
 }
 
@@ -383,6 +386,8 @@ function openCredential(id, row) {
     credentialOpen = true;
 
     row.classList.add('highlight');
+    const btn = row.querySelector('.action-menu-btn');
+    btn.classList.add('show');
 }
 
 function renderCredential(data) {

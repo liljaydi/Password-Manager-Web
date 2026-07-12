@@ -751,10 +751,19 @@ nav .active {
 ===========================*/
 
 .action-menu-btn {
+    visibility: hidden;
     margin-left: auto;
     width: 36px;
     padding: var(--space-xs);
     border-radius: 50%;
+}
+
+.account-row:hover .action-menu-btn {
+    visibility: visible;
+}
+
+.action-menu-btn.show {
+    visibility: visible;
 }
 
 .action-menu-btn:hover {
