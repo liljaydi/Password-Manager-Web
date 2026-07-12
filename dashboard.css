@@ -11,6 +11,8 @@
 
     --muted-foreground: oklch(65.929% 0.02056 265.939);
 
+    --destructive: oklch(62.058% 0.21021 25.018);
+
     --card: oklch(20% .014 265);
 
     --text-xs: 0.75rem;    /* 12px */
@@ -160,6 +162,9 @@ nav .active {
     font-size: var(--text-sm);
     font-weight: 500;
     height: 36px;
+
+    transition: background-color 0.2s ease;
+    transition: color 0.2s ease;
 }
 
 .sidebar-link:hover {
@@ -221,7 +226,7 @@ nav .active {
     outline: none;
     width: 300px;
 
-    transition: width 0.2s ease;
+    transition: background-color 0.075s ease;
 }
 
 .search-bar::-webkit-search-cancel-button {
@@ -303,7 +308,7 @@ nav .active {
     top: 10px;
     right: 10px;
     bottom: 10px;
-    padding: 30px 24px;
+    padding: 24px 24px;
     background-color: var(--background);
     height: calc(100vh - 20px);
     border-radius: 18px;
@@ -314,42 +319,37 @@ nav .active {
     transition: transform 0.25s ease;
 }
 
-/*
-#add-panel::-webkit-scrollbar {
-    width: 10px;
+.close-add-panel-btn {
+    position: absolute;
+    top: var(--space-m);
+    right: var(--space-m);
+    border-radius: 10px;
+    padding: 4px;
+
+    transition: background-color 0.2s ease;
 }
 
-#add-panel::-webkit-scrollbar-track {
-    background: var(--background);
+.close-add-panel-btn:hover {
+    background-color: var(--accent);
 }
-
-#add-panel::-webkit-scrollbar-thumb {
-    border-radius: 6px;
-    background: oklch(from var(--background) calc(l + 0.15) c h);
-}
-
-#add-panel::-webkit-scrollbar-thumb:hover {
-    border-radius: 6px;
-    background: oklch(from var(--background) calc(l + 0.3) c h);
-}
-*/
 
 #add-panel h3 {
     font-weight: 500;
-    font-size: var(--text-lg);
-    margin-bottom: 4px;
+    font-size: var(--text-xl);
+    font-weight: 500;
+    margin-bottom: 2px;
 }
 
 #add-panel .sub-txt {
-    font-size: var(--text-sm);
-    color: #55555f;
+    font-size: var(--text-xs);
+    color: #8a8a9a;
     margin-bottom: var(--space-s);
 }
 
 /* input label */
 #add-panel label {
     display: block;
-    font-size: var(--text-xs);
+    font-size: 10px;
     color: #8a8a9a;
     margin-bottom: 6px;
     letter-spacing: 0.8px;
@@ -367,13 +367,13 @@ nav .active {
 #add-panel textarea {
     display: block;
     border: none;
-    background-color: var(--background);
+    background-color: var(--card);
     padding: 10px 12px;
-    border-radius: 8px;
+    border-radius: 10px;
     color: #f0f0f2;
     outline: 1px solid #2a2a2f;
     font-size: 12px;
-    margin-bottom: var(--space-s);
+    margin-bottom: 14px;
     width: 100%;
     font-family: inherit;
     overflow-y: auto;
@@ -429,7 +429,7 @@ nav .active {
 
 #add-panel .optional {
     margin-left: 4px;
-    font-size: var(--text-xs);
+    font-size: 10px;
     letter-spacing: 0.2px;
 }
 
@@ -455,7 +455,9 @@ nav .active {
     display: block;
     border: none;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 10px;
+
+    transition: background-color 0.2s ease;
 }
 
 #add-panel .confirm-add .cancel {
@@ -488,7 +490,7 @@ nav .active {
     right: 0;
     width: 100%;
     height: 100%;
-    background-color: oklch(from var(--sidebar) calc(l + 0.15) c h);
+    background-color: oklch(from var(--sidebar) calc(l + 0.1) c h);
 
     opacity: 0;
     transition: opacity 0.25s ease;
@@ -517,12 +519,13 @@ nav .active {
 .credential-panel {
     display: none;
     background-color: oklch(from var(--sidebar) calc(l - 0.01) c h);
-    min-width: 400px;
+    min-width: 460px;
     height: calc(100vh - 108px);
     margin-right: var(--space-l);
     position: relative;
     border: 1px solid #2a2a2f;
     overflow-y: auto;
+    padding-bottom: var(--space-s);
 
     border-radius: 14px;
 }
@@ -531,7 +534,7 @@ nav .active {
 
 .account-list {
     overflow-y: auto;
-    max-height: calc(100vh - 108px);
+    min-height: calc(100vh - 108px);
     padding: 1px var(--space-l) 0px;
 }
 
@@ -572,8 +575,11 @@ nav .active {
     background-color: var(--card);
     border-radius: 14px;
     border: 1px solid #2a2a2f;
+    position: relative;
 
     cursor: pointer;
+
+    transition: background-color 0.2s ease;
 }
 
 .account-list .account-row.highlight {
@@ -619,7 +625,7 @@ nav .active {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0px 175px;
+    margin: 0px 205px;
     min-height: 50px;
     min-width: 50px;
     font-weight: 500;
@@ -634,28 +640,168 @@ nav .active {
     display: flex;
     justify-content: center;
     font-weight: 500;
-    font-size: var(--text-lg);
-    margin-bottom: var(--space-m);
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-s);
 }
 
 .close-credential-btn {
     position: absolute;
     top: var(--space-s);
     right: var(--space-s);
+    border-radius: 10px;
+    padding: 4px;
+
+    transition: background-color 0.2s ease;
+}
+
+.close-credential-btn:hover {
+    background-color: var(--accent);
 }
 
 .data-display {
-    width: auto;
     background-color: var(--card);
-    margin: 0px var(--space-m) var(--space-s);
-    padding: 10px var(--space-s);
+    margin: 0px var(--space-m) var(--space-xs);
+    padding: var(--space-xs) var(--space-s);
     border-radius: 14px;
     border: 1px solid #2a2a2f;
     font-size: var(--text-sm);
+    max-width: 410px;
+    display: flex;
+    align-items: start;
+    gap: var(--space-s);
 }
 
 .credential-content .label {
     color: var(--muted-foreground);
     font-size: var(--text-xs);
     margin-bottom: 2px;
+}
+
+.credential-icon {
+    margin-top: 8px;
+    width: 18px;
+}
+
+/*==========================================
+
+    show and hide password functionality
+
+==========================================*/
+
+.show-password-icon,
+.hide-password-icon {
+    display: none;
+    width: 18px;
+    height: 18px;
+}
+
+.show-password-icon.display {
+    display: block;
+}
+
+.hide-password-icon.display {
+    display: block;
+}
+
+.show-box,
+.hide-box {
+    margin-top: var(--space-xxs);
+    margin-bottom: var(--space-xxs);
+    display: none;
+    padding: 6px;
+    border-radius: 10px;
+    margin-left: auto;
+}
+
+.show-box.display {
+    display: block;
+}
+
+.hide-box.display {
+    display: block;
+}
+
+.show-box:hover,
+.hide-box:hover {
+    background-color: var(--accent);
+}
+
+.password-hidden,
+.password-showed {
+    display: none;
+}
+
+.password-hidden.hide {
+    font-size: var(--text-xl);
+    letter-spacing: 2px;
+    line-height: 20px;
+    position: relative;
+    top: -2px;
+    display: block;
+}
+
+.password-showed.expose {
+    display: block;
+}
+
+/*===========================
+
+    action menu functions
+
+===========================*/
+
+.action-menu-btn {
+    margin-left: auto;
+    width: 36px;
+    padding: var(--space-xs);
+    border-radius: 50%;
+}
+
+.action-menu-btn:hover {
+    background-color: var(--accent);
+}
+
+.action-menu {
+    position: absolute;
+    top: 80%;
+    right: var(--space-xs);
+    z-index: 1000;
+    background-color: oklch(from var(--sidebar) calc(l + 0.175) c h);
+    padding: 6px;
+    border-radius: 12px;
+    font-size: var(--text-sm);
+    font-weight: 500;
+
+    display: none;
+}
+
+.action-menu.show {
+    display: block;
+}
+
+.action-menu img {
+    width: 16px;
+}
+
+.edit-btn,
+.delete-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xxs);
+    padding: 6px 10px;
+    border-radius: 8px;
+
+    transition: background-color 0.2s ease;
+}
+
+.edit-btn:hover {
+    background-color: oklch(from var(--sidebar) calc(l + 0.25) c h);
+}
+
+.delete-btn:hover {
+    background-color: oklch(62.058% 0.21021 25.018 / 0.15);
+}
+
+.delete-btn p {
+    color: oklch(from var(--destructive) calc(l + 0.1) c h);
 }

@@ -117,19 +117,28 @@ saveButton.addEventListener('submit', (e) => {
                     <p class='row-title'>${titleInput.value}</p>
                     <p class='row-username'>${usernameInput.value}</p>
                 </div>
+                <img class="action-menu-btn" src="assets/dots-vertical-rounded.svg" alt="Error">
+                <div class="action-menu">
+                    <div class="edit-btn">
+                        <img src="assets/pencil.svg" alt="Error">
+                        <p>Edit</p>
+                    </div>
+                    <div class="delete-btn">
+                        <img src='assets/trash-light-red.svg' alt='Error'>
+                        <p>Delete</p>
+                        <div>
+                            
+                        </div>
+                    </div>
+                </div>
             `
             document.querySelector('.account-list').appendChild(row);
 
             row.addEventListener('click', () => {
-                
-                document.querySelectorAll('.account-row').forEach((row) => {
-                    row.classList.remove('highlight');
-                    const credentialContent = document.querySelector('.credential-content');
-                    credentialContent.innerHTML = '';
-                });
+                resetClick();
 
                 if (previousId === row.dataset.id) {
-                    closeCredential(row.dataset.id, row);
+                    closeCredential();
                     previousId = null;
                     return;
                 }
@@ -137,7 +146,23 @@ saveButton.addEventListener('submit', (e) => {
                 previousId = row.dataset.id;
                 openCredential(row.dataset.id, row);
             });
-            
+
+            const btn = row.querySelector('.action-menu-btn');
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+
+                let actionMenuOpened = row.nextElementSibling.classList.contains('show');
+                closeActionMenu();
+
+                if (actionMenuOpened) {
+                    row.nextElementSibling.classList.remove('show');
+                } else {
+                    row.nextElementSibling.classList.add('show');
+                }
+            })
+
+
             clearInputData();
             closeAddPanel();
             hideEmptyState();
@@ -146,6 +171,41 @@ saveButton.addEventListener('submit', (e) => {
         };
     });
 });
+
+document.addEventListener('click', closeActionMenu);
+
+function closeActionMenu() {
+    const actionMenuShowed = document.querySelectorAll('.action-menu.show');
+    actionMenuShowed.forEach((menu) => {
+        menu.classList.remove('show');
+    });
+}
+
+const actionMenu = document.querySelectorAll('.action-menu');
+
+actionMenu.forEach((menu) => {
+    menu.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+});
+
+
+
+document.querySelectorAll('.action-menu-btn').forEach((row) => {
+    row.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        let actionMenuOpened = row.nextElementSibling.classList.contains('show');
+        closeActionMenu();
+
+        if (actionMenuOpened) {
+            row.nextElementSibling.classList.remove('show');
+        } else {
+            row.nextElementSibling.classList.add('show');
+        }
+    });
+});
+
 
 // cancels add account and clears all inputs
 cancelButton.addEventListener('click', () => {
@@ -268,15 +328,10 @@ let previousId = null;
 
 accountRow.forEach((row) => {
     row.addEventListener('click', () => {
-
-        document.querySelectorAll('.account-row').forEach((row) => {
-            row.classList.remove('highlight');
-            const credentialContent = document.querySelector('.credential-content');
-            credentialContent.innerHTML = '';
-        });
+        resetClick();
 
         if (previousId === row.dataset.id) {
-            closeCredential(row.dataset.id, row);
+            closeCredential();
             previousId = null;
             return;
         }
@@ -285,6 +340,22 @@ accountRow.forEach((row) => {
         openCredential(row.dataset.id, row);
     })
 })
+
+const closeCredentialBtn = document.querySelector('.close-credential-btn');
+
+closeCredentialBtn.addEventListener('click', () => {
+    previousId = null;
+    resetClick();
+    closeCredential();
+});
+
+function resetClick() {
+    document.querySelectorAll('.account-row').forEach((row) => {
+        row.classList.remove('highlight');
+        const credentialContent = document.querySelector('.credential-content');
+        credentialContent.innerHTML = '';
+    });
+}
 
 function openCredential(id, row) {
     const formdata = new FormData();
@@ -322,21 +393,37 @@ function renderCredential(data) {
         <h2 class="credential-title">${data.title}</h2>
 
         <div class="data-display">
-            <p class="label">Username</p>
-            <p>${data.username}</p>
+            <img class="credential-icon" src="assets/user-gray.svg" alt="Error">
+            <div>
+                <p class="label">Username</p>
+                <p>${data.username}</p>
+            </div>
         </div>
 
         <div class="data-display">
-            <p class="label">Password</p>
-            <p>${data.password}</p>
+            <img class="credential-icon" src="assets/car-key-gray.svg" alt="Error">
+            <div>
+                <p class="label">Password</p>
+                <p class="password-hidden">••••••••</p>
+                <p class="password-showed">${data.password}</p>
+            </div>
+            <div class="show-box">
+                <img class="show-password-icon" src="assets/eye-gray.svg" alt="Error">
+            </div>
+            <div class="hide-box">
+                <img class="hide-password-icon" src="assets/eye-slash-gray.svg" alt="Error">
+            </div>
         </div>
     `;
 
     if (data.url) {
         html += `
             <div class="data-display">
-                <p class="label">URL</p>
-                <p>${data.url}</p>
+                <img class="credential-icon" src="assets/globe-alt-gray.svg" alt="Error">
+                <div>
+                    <p class="label">URL</p>
+                    <p>${data.url}</p>
+                </div>
             </div>
         `;
     }
@@ -344,22 +431,68 @@ function renderCredential(data) {
     if (data.notes) {
         html += `
             <div class="data-display">
-                <p class="label">Notes</p>
-                <p>${data.notes}</p>
+                <img class="credential-icon" src="assets/note-gray.svg" alt="Error">
+                <div>
+                    <p class="label">Notes</p>
+                    <p>${data.notes}</p>
+                </div>
             </div>
         `;
     }
 
     credentialContent.innerHTML = html;
+    showHidePassword();
 }
 
-function closeCredential(id, row) {
+function showHidePassword() {
+    const showPasswordIcon = document.querySelector('.show-password-icon');
+    const passwordHidden = document.querySelector('.password-hidden');
+    const showBox = document.querySelector('.show-box');
+
+    const passwordShowed = document.querySelector('.password-showed');
+    const hidePasswordIcon = document.querySelector('.hide-password-icon');
+    const hideBox = document.querySelector('.hide-box');
+
+    showPasswordIcon.classList.add('display');
+    passwordHidden.classList.add('hide');
+    showBox.classList.add('display');
+
+    showBox.addEventListener('click', () => {
+        passwordHidden.classList.remove('hide');
+        passwordShowed.classList.add('expose');
+
+        showPasswordIcon.classList.remove('display');
+        hidePasswordIcon.classList.add('display');
+
+        showBox.classList.remove('display');
+        hideBox.classList.add('display');
+    });
+
+    hideBox.addEventListener('click', () => {
+        passwordHidden.classList.add('hide');
+        passwordShowed.classList.remove('expose');
+
+        showPasswordIcon.classList.add('display');
+        hidePasswordIcon.classList.remove('display');
+
+        showBox.classList.add('display');
+        hideBox.classList.remove('display');
+    });
+}
+
+function closeCredential() {
     credentialsContainer.classList.remove('flex');
     accountList.classList.remove('open'); // don't mind why i did not add 'close' "just dont change anything"
 
     credentialOpen = false;
-    row.classList.remove('highlight');
 
     const credentialContent = document.querySelector('.credential-content');
     credentialContent.innerHTML = '';
 }
+
+const closeAddPanelBtn = document.querySelector('.close-add-panel-btn');
+
+closeAddPanelBtn.addEventListener('click', () => {
+    closeAddPanel();
+});
+

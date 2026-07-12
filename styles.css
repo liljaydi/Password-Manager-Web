@@ -38,11 +38,11 @@ body {
     font-family: "Mona Sans", sans-serif;
     color: var(--foreground);
     background-color: var(--background);
+
 }
 
 .container {
     display: flex;
-    height: calc(100vh + 120px);
 }
 
 /*===================================
@@ -58,6 +58,9 @@ container left - myAccess information
     padding: 40px;
     min-width: 380px;
     overflow-y: hidden;
+    position: sticky;
+    top: 0;
+    height: 100vh;
 
     background: 
     radial-gradient(

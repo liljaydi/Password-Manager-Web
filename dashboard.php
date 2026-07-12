@@ -46,19 +46,19 @@ $result = mysqli_query($conn, $getCredentials);
 
             <div class="sidebar-content">
                 <!-- password button -->
-                <a href="#" class="active">
+                <a class="active">
                     <img class="lock-icon" src="assets/lock-white.svg" alt="Error">
                     <span>Passwords</span>
                 </a>
 
                 <!-- folder button -->
-                <a href="#" class="sidebar-link">
+                <a class="sidebar-link">
                     <img class="folder-icon" src="assets/folder.svg" alt="Error">
                     <span>Folder</span>
                 </a>
 
                 <!-- favorites button -->
-                <a href="#" class="sidebar-link">
+                <a class="sidebar-link">
                     <img class="star-icon" src="assets/folder-star.svg" alt="Error">
                     <span>Favorites</span>
                 </a>
@@ -102,6 +102,17 @@ $result = mysqli_query($conn, $getCredentials);
                                     <p class='row-title'>{$credential['title']}</p>
                                     <p class='row-username'>{$credential['username']}</p>
                                 </div>
+                                <img class='action-menu-btn' src='assets/dots-vertical-rounded.svg' alt='Error'>
+                                <div class='action-menu'>
+                                    <div class='edit-btn'>
+                                        <img src='assets/pencil.svg' alt='Error'>
+                                        <p>Edit</p>
+                                    </div>
+                                    <div class='delete-btn'>
+                                        <img src='assets/trash-light-red.svg' alt='Error'>
+                                        <p>Delete</p>
+                                    </div>
+                                </div>
                             </div>
                         ";
                     }
@@ -122,6 +133,7 @@ $result = mysqli_query($conn, $getCredentials);
 
         <!-- add panel -->
         <aside id="add-panel">
+            <img class="close-add-panel-btn" src="assets/x-muted.svg" alt="Error">
             <h3>Add New Password</h3>
             <p class="sub-txt">Fill in the details for your new password</p>
 
@@ -149,13 +161,13 @@ $result = mysqli_query($conn, $getCredentials);
             
                 <!-- url -->
                 <label>
-                    URL<span class="optional">(optional)</span>
+                    URL<span class="optional">- optional</span>
                 </label>
                 <input name="url" class="url" type="text" placeholder="e.g. facebook.com">
             
                 <!-- notes -->
                 <label>
-                    NOTES<span class="optional">(optional)</span>
+                    NOTES<span class="optional">- optional</span>
                 </label>
                 <textarea name="notes" class="notes" placeholder="any additional notes..."></textarea>
 
