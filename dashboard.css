@@ -318,6 +318,8 @@ nav .active {
     width: 560px;
     overflow-y: auto;
     z-index: 10000;
+    display: flex;
+    flex-direction: column;
 
     transform: translateX(100%);
     transition: transform 0.25s ease;
@@ -446,10 +448,17 @@ nav .active {
     height: 80px;
 }
 
+.add-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
 /* displays cancel and save button */
 #add-panel .confirm-add {
     display: flex;
     gap: 10px;
+    margin-top: auto;
 }
 
 #add-panel .confirm-add .cancel,

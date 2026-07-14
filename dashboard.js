@@ -1,3 +1,17 @@
+/*=====================
+
+    global elements
+
+=====================*/
+
+const unfocus = document.querySelector('.unfocus');
+const accountList = document.querySelector('.account-list');
+const emptyState = document.querySelector('.empty-state');
+
+let credentialOpen = false;
+let previousId = null;
+let deleteId = null;
+
 /*=======================
 
     add panel display
@@ -7,15 +21,18 @@
 const addButton = document.querySelectorAll('.add-button');
 const closeAddPanelBtn = document.querySelector('.close-add-panel-btn');
 const addPanel = document.getElementById('add-panel');
-const unfocus = document.querySelector('.unfocus');
 
 // open add panel
 addButton.forEach((button) => {
     button.addEventListener('click', showAddPanel);
-})
+});
 
-// close add panel
-unfocus.addEventListener('click', closeAddPanel);
+// close add panel and delete modal
+unfocus.addEventListener('click', () => {
+    closeAddPanel();
+    closeDeleteModal();
+});
+
 closeAddPanelBtn.addEventListener('click', closeAddPanel);
 
 function showAddPanel() {
@@ -26,14 +43,14 @@ function showAddPanel() {
 function closeAddPanel() {
     addPanel.classList.remove('show');
     unfocus.classList.remove('show');
-    clearBlankInputState();
+    clearInputErrors();
 }
 
-/*============================
+/*====================
 
-    credentials input data    
+    add credential 
 
-============================*/
+====================*/
 
 const titleInput = document.querySelector('.title');
 const usernameInput = document.querySelector('.username');
@@ -41,7 +58,7 @@ const passwordInput = document.querySelector('.password');
 const urlInput = document.querySelector('.url');
 const notesInput = document.querySelector('.notes');
 
-const saveButton = document.querySelector('.add-form');
+const addForm = document.querySelector('.add-form');
 const cancelButton = document.querySelector('.confirm-add .cancel');
 const titleErrorMsg = document.querySelector('.title-error-msg');
 
@@ -50,15 +67,9 @@ titleInput.addEventListener('input', () => {
     titleInput.classList.remove('red-outline');
 });
 
-/*======================================
-
-    send credentials data to backend    
-
-======================================*/
-
-saveButton.addEventListener('submit', (e) => {
+addForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    clearBlankInputState();
+    clearInputErrors();
 
     const titleEmpty = !titleInput.value;
     if (titleEmpty) {
@@ -82,24 +93,48 @@ saveButton.addEventListener('submit', (e) => {
         }
 
         const row = createAccountRow(data);
+
+        initializeAccountRow(row);
         handleRowClick(row);
-
-        const menuBtn = row.querySelector('.action-menu-btn');
-        const actionMenu = row.querySelector('.action-menu');
-
-        // stops clicking the row when action menu is click
-        actionMenu.addEventListener('click', e => e.stopPropagation());
-
-        // functions the action menu button
-        menuBtn.addEventListener('click', e => handleActionMenuClick(e, menuBtn));
-
-        row.querySelector('.delete-btn').addEventListener('click', () => handleDeleteBtn(row));
 
         clearInputData();
         closeAddPanel();
         hideEmptyState();
     });
 });
+
+// cancel add new account
+cancelButton.addEventListener('click', () => {
+    clearInputData();
+    closeAddPanel();
+});
+
+// clear input data
+function clearInputData() {
+    titleInput.value = '';
+    usernameInput.value = '';
+    passwordInput.value = '';
+    urlInput.value = '';
+    notesInput.value = '';
+}
+
+// clear error message
+function clearInputErrors() {
+    titleErrorMsg.classList.remove('show');
+    titleInput.classList.remove('red-outline');
+}
+
+// handles empty state display
+function hideEmptyState() {
+    emptyState.classList.add('hide');
+    accountList.classList.remove('hide');
+}
+
+/*==================
+
+    account rows
+
+==================*/
 
 function createAccountRow(data) {
     const row = document.createElement('div');
@@ -125,7 +160,7 @@ function createAccountRow(data) {
         </div>
     `
 
-    document.querySelector('.account-list').prepend(row);
+    accountList.prepend(row);
 
     row.addEventListener('click', () => {
         handleRowClick(row);
@@ -134,8 +169,21 @@ function createAccountRow(data) {
     return row;
 }
 
+function initializeAccountRow(row) {
+    const menuBtn = row.querySelector('.action-menu-btn');
+    const actionMenu = row.querySelector('.action-menu');
+
+    // stops clicking the row when action menu is click
+    actionMenu.addEventListener('click', e => e.stopPropagation());
+
+    // functions the action menu button
+    menuBtn.addEventListener('click', e => handleActionMenuClick(e, menuBtn));
+
+    row.querySelector('.delete-btn').addEventListener('click', () => handleDeleteBtn(row));
+}
+
 function handleRowClick(row) {
-    resetClick();
+    clearSelectedRow();
 
     if (previousId === row.dataset.id) {
         closeCredential();
@@ -152,7 +200,7 @@ function handleActionMenuClick(e, menuBtn) {
 
     const actionMenu = menuBtn.nextElementSibling;
     const row = actionMenu.parentElement;
-    let actionMenuOpened = actionMenu.classList.contains('show');
+    const actionMenuOpened = actionMenu.classList.contains('show');
     
     closeActionMenu();
 
@@ -169,66 +217,25 @@ function handleDeleteBtn(row) {
 
     showDeleteModal();
     closeActionMenu();
-    loadCredentialForDelete(row);
+    fetchCredentialForDelete(row);
 }
 
-/*============================================
+/*========================
 
- cancels add account and clears all inputs
+    sidebar navigation
 
-============================================*/
-
-const emptyState = document.querySelector('.empty-state');
-
-// cancel add new account
-cancelButton.addEventListener('click', () => {
-    clearInputData();
-    closeAddPanel();
-});
-
-// clear error message
-function clearBlankInputState() {
-    titleErrorMsg.classList.remove('show');
-    titleInput.classList.remove('red-outline');
-}
-
-// clear input data
-function clearInputData() {
-    titleInput.value = '';
-    usernameInput.value = '';
-    passwordInput.value = '';
-    urlInput.value = '';
-    notesInput.value = '';
-}
-
-// handles empty state display
-function hideEmptyState() {
-    emptyState.classList.add('hide');
-    accountList.classList.remove('hide');
-}
-
-/*======================================
-
-    show and hide sidebar navigation
-
-======================================*/
+========================*/
 
 const sidebar = document.querySelector('nav');
-
 const toggleLeft = document.querySelector('.toggle-left');
 const toggleRight = document.querySelector('.toggle-right');
-
-toggleLeft.classList.add('show');
-toggleRight.classList.remove('show');
-
 const logoImg = document.querySelector('.nav-heading .logo-img');
 const logoName = document.querySelector('.nav-heading p');
 const navigationLabel = document.querySelectorAll('.sidebar-content a span');
 const mainHeading = document.getElementById('main-heading');
 
-// credential container
-const accountList = document.querySelector('.account-list');
-
+toggleLeft.classList.add('show');
+toggleRight.classList.remove('show');
 toggleLeft.addEventListener('click', navClose);
 toggleRight.addEventListener('click', navOpen);
 
@@ -284,17 +291,16 @@ function navOpen() {
     }
 }
 
-/*==============================
+/*=========================
 
-    open credentials details
+    credentials details
 
-==============================*/
+=========================*/
 
 const accountRow = document.querySelectorAll('.account-row');
 const credentialsContainer = document.querySelector('#credentials-container');
-
-let credentialOpen = false;
-let previousId = null;
+const closeCredentialBtn = document.querySelector('.close-credential-btn');
+const credentialContent = document.querySelector('.credential-content');
 
 // listens for click for each row stored in data base
 accountRow.forEach((row) => {
@@ -302,6 +308,12 @@ accountRow.forEach((row) => {
         handleRowClick(row);
     })
 })
+
+closeCredentialBtn.addEventListener('click', () => {
+    previousId = null;
+    clearSelectedRow();
+    closeCredential();
+});
 
 function openCredential(id, row) {
     const formdata = new FormData();
@@ -328,8 +340,6 @@ function openCredential(id, row) {
 }
 
 function renderCredential(data) {
-    const credentialContent = document.querySelector('.credential-content');
-
     let html = `
         <div class="credential-img">${data.initial}</div>
         <h2 class="credential-title">${data.title}</h2>
@@ -395,46 +405,31 @@ function renderCredential(data) {
     if (data.password) showHidePassword();
 }
 
-/*============================
-
-    close credential panel
-
-============================*/
-
-const closeCredentialBtn = document.querySelector('.close-credential-btn');
-
-closeCredentialBtn.addEventListener('click', () => {
-    previousId = null;
-    resetClick();
-    closeCredential();
-});
-
 function closeCredential() {
     credentialsContainer.classList.remove('flex');
     accountList.classList.remove('open'); // don't mind why i did not add 'close' "just dont change anything"
 
     credentialOpen = false;
 
-    const credentialContent = document.querySelector('.credential-content');
     credentialContent.innerHTML = '';
 }
 
-function resetClick() {
+function clearSelectedRow() {
+    credentialContent.innerHTML = '';
+
     document.querySelectorAll('.account-row').forEach((row) => {
         row.classList.remove('highlight');
-        const credentialContent = document.querySelector('.credential-content');
-        credentialContent.innerHTML = '';
 
         const btn = row.querySelector('.action-menu-btn');
         btn.classList.remove('show');
     });
 }
 
-/*===============================
+/*========================
 
-    show/hide password inside
+    password visibility
 
-===============================*/
+========================*/
 
 function showHidePassword() {
     const showPasswordIcon = document.querySelector('.show-password-icon');
@@ -472,22 +467,15 @@ function showHidePassword() {
     });
 }
 
-/*===============================
+/*=================
 
-    action menu functionality
+    action menu
 
-===============================*/
-
-document.addEventListener('click', closeActionMenu);
-
-function closeActionMenu() {
-    const actionMenuShowed = document.querySelectorAll('.action-menu.show');
-    actionMenuShowed.forEach((menu) => {
-        menu.classList.remove('show');
-    });
-}
+=================*/
 
 const actionMenu = document.querySelectorAll('.action-menu');
+
+document.addEventListener('click', closeActionMenu);
 
 // stops clicking the row when action menu is clicked
 actionMenu.forEach((menu) => {
@@ -499,6 +487,13 @@ document.querySelectorAll('.action-menu-btn').forEach((menuBtn) => {
     menuBtn.addEventListener('click', e => handleActionMenuClick(e, menuBtn));
 });
 
+function closeActionMenu() {
+    const actionMenuShowed = document.querySelectorAll('.action-menu.show');
+    actionMenuShowed.forEach((menu) => {
+        menu.classList.remove('show');
+    });
+}
+
 /*====================
 
     delete account
@@ -508,62 +503,14 @@ document.querySelectorAll('.action-menu-btn').forEach((menuBtn) => {
 const deleteBtn = document.querySelectorAll('.delete-btn');
 const deleteModal = document.querySelector('.delete-modal');
 const accountDetailsContainer = document.querySelector(".account-details-container");
+const cancelDelete = document.querySelector('.confirm-delete .cancel');
+const continueDelete = document.querySelector('.confirm-delete .delete');
 
 // press delete button
 deleteBtn.forEach((btn) => {
     const row = btn.parentElement.parentElement;
     btn.addEventListener('click', () => handleDeleteBtn(row));
 });
-
-// show delete modal
-function showDeleteModal() {
-    unfocus.classList.add('show');
-    deleteModal.classList.add('show');
-}
-
-// access account to delete data
-function loadCredentialForDelete(row) {
-    const formdata = new FormData();
-    deleteId = row.dataset.id;
-
-    formdata.append("action", "getCredential"); 
-    formdata.append("id", row.dataset.id);
-
-    sendRequest(formdata).then(data => {
-        if (!data.success) {
-            console.log("failed");
-            return;
-        }
-
-        displayAccountInfo(data);
-        deleteModal.classList.add('visible');
-        console.log("\naccount to delete");
-        console.log("title: " + data.title);
-        console.log("id   : " + deleteId);
-    });
-}
-
-let deleteId = null;
-
-// display account data in delete modal
-function displayAccountInfo(data) {
-    accountDetailsContainer.innerHTML = `
-        <p class="sub-heading">This will permanently remove <span>${data.title}</span> from your saved accounts.</p>
-
-        <div class="account-details">
-            <div class="main-info">
-                <p class="account-img">${data.initial.toUpperCase()}</p>
-                <div>
-                    <p class="row-title">${data.title}</p>
-                    <p class="row-username">${data.username}</p>
-                </div>
-            </div>
-        </div>
-    `
-}
-
-const cancelDelete = document.querySelector('.confirm-delete .cancel');
-const continueDelete = document.querySelector('.confirm-delete .delete');
 
 // cancel delete account
 cancelDelete.addEventListener('click', closeDeleteModal);
@@ -600,6 +547,12 @@ continueDelete.addEventListener('click', () => {
     })
 });
 
+// show delete modal
+function showDeleteModal() {
+    unfocus.classList.add('show');
+    deleteModal.classList.add('show');
+}
+
 // close delete modal
 function closeDeleteModal() {
     unfocus.classList.remove('show');
@@ -608,9 +561,48 @@ function closeDeleteModal() {
     deleteId = null;
 }
 
+// access account to delete data
+function fetchCredentialForDelete(row) {
+    const formdata = new FormData();
+    deleteId = row.dataset.id;
+
+    formdata.append("action", "getCredential"); 
+    formdata.append("id", row.dataset.id);
+
+    sendRequest(formdata).then(data => {
+        if (!data.success) {
+            console.log("failed");
+            return;
+        }
+
+        renderDeleteDetails(data);
+        deleteModal.classList.add('visible');
+        console.log("\naccount to delete");
+        console.log("title: " + data.title);
+        console.log("id   : " + deleteId);
+    });
+}
+
+// display account data in delete modal
+function renderDeleteDetails(data) {
+    accountDetailsContainer.innerHTML = `
+        <p class="sub-heading">This will permanently remove <span>${data.title}</span> from your saved accounts.</p>
+
+        <div class="account-details">
+            <div class="main-info">
+                <p class="account-img">${data.initial.toUpperCase()}</p>
+                <div>
+                    <p class="row-title">${data.title}</p>
+                    <p class="row-username">${data.username}</p>
+                </div>
+            </div>
+        </div>
+    `
+}
+
 /*===============
 
-    utilities
+    Utilities
 
 ===============*/
 
