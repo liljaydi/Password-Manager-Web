@@ -12,6 +12,20 @@ let credentialOpen = false;
 let previousId = null;
 let deleteId = null;
 
+/*===============
+
+    Utilities
+
+===============*/
+
+function sendRequest(formdata) {
+    return fetch("action.php", {
+        method: "POST",
+        body: formdata
+    })
+    .then(res => res.json())
+}
+
 /*=======================
 
     add panel display
@@ -193,35 +207,6 @@ function handleRowClick(row) {
     
     previousId = row.dataset.id;
     openCredential(row.dataset.id, row);
-}
-
-function handleActionMenuClick(e, menuBtn) {
-    e.stopPropagation();
-
-    const actionMenu = menuBtn.nextElementSibling;
-    const row = actionMenu.parentElement;
-    const actionMenuOpened = actionMenu.classList.contains('show');
-    
-    closeActionMenu();
-
-    if (actionMenuOpened) {
-        actionMenu.classList.remove('show');
-
-        if (!(row.classList.contains('highlight'))) menuBtn.classList.remove('show');
-    } else {
-        menuBtn.classList.add('show');
-
-        console.log("\naccount id clicked: " + row.dataset.id);
-        actionMenu.classList.add('show');
-    }
-}
-
-function handleDeleteBtn(row) {
-    accountDetailsContainer.innerHTML = "";
-
-    showDeleteModal();
-    closeActionMenu();
-    fetchCredentialForDelete(row);
 }
 
 /*========================
@@ -491,6 +476,27 @@ document.querySelectorAll('.action-menu-btn').forEach((menuBtn) => {
     menuBtn.addEventListener('click', e => handleActionMenuClick(e, menuBtn));
 });
 
+function handleActionMenuClick(e, menuBtn) {
+    e.stopPropagation();
+
+    const actionMenu = menuBtn.nextElementSibling;
+    const row = actionMenu.parentElement;
+    const actionMenuOpened = actionMenu.classList.contains('show');
+    
+    closeActionMenu();
+
+    if (actionMenuOpened) {
+        actionMenu.classList.remove('show');
+
+        if (!(row.classList.contains('highlight'))) menuBtn.classList.remove('show');
+    } else {
+        menuBtn.classList.add('show');
+
+        console.log("\naccount id clicked: " + row.dataset.id);
+        actionMenu.classList.add('show');
+    }
+}
+
 function closeActionMenu() {
     const actionMenuShowed = document.querySelectorAll('.action-menu.show');
     actionMenuShowed.forEach((menu) => {
@@ -556,6 +562,14 @@ continueDelete.addEventListener('click', () => {
     })
 });
 
+function handleDeleteBtn(row) {
+    accountDetailsContainer.innerHTML = "";
+
+    showDeleteModal();
+    closeActionMenu();
+    fetchCredentialForDelete(row);
+}
+
 // show delete modal
 function showDeleteModal() {
     unfocus.classList.add('show');
@@ -607,18 +621,4 @@ function renderDeleteDetails(data) {
             </div>
         </div>
     `
-}
-
-/*===============
-
-    Utilities
-
-===============*/
-
-function sendRequest(formdata) {
-    return fetch("action.php", {
-        method: "POST",
-        body: formdata
-    })
-    .then(res => res.json())
 }
