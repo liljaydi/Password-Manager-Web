@@ -206,7 +206,11 @@ function handleActionMenuClick(e, menuBtn) {
 
     if (actionMenuOpened) {
         actionMenu.classList.remove('show');
+
+        if (!(row.classList.contains('highlight'))) menuBtn.classList.remove('show');
     } else {
+        menuBtn.classList.add('show');
+
         console.log("\naccount id clicked: " + row.dataset.id);
         actionMenu.classList.add('show');
     }
@@ -491,6 +495,11 @@ function closeActionMenu() {
     const actionMenuShowed = document.querySelectorAll('.action-menu.show');
     actionMenuShowed.forEach((menu) => {
         menu.classList.remove('show');
+        const row = menu.parentElement;
+
+        if (!(row.classList.contains('highlight'))) {
+            menu.previousElementSibling.classList.remove('show');
+        }
     });
 }
 
