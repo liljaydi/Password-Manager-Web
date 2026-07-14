@@ -163,29 +163,19 @@ $result = mysqli_query($conn, $getCredentials);
                 <input name="title" class="title" type="text" placeholder="e.g. Facebook">
             
                 <!-- username -->
-                <label>
-                    USERNAME<span class="required-dot">*</span>
-                    <span class="username-error-msg">Please enter your username</span>
-                </label>
+                <label>USERNAME</label>
                 <input name="username" class="username" type="text" placeholder="Enter username">
             
                 <!-- password -->
-                <label>
-                    PASSWORD<span class="required-dot">*</span>
-                    <span class="password-error-msg">Please enter your password</span>
-                </label>
+                <label>PASSWORD</label>
                 <input name="password" class="password" type="password" placeholder="Enter password">
             
                 <!-- url -->
-                <label>
-                    URL<span class="optional">- optional</span>
-                </label>
+                <label>URL</label>
                 <input name="url" class="url" type="text" placeholder="e.g. facebook.com">
             
                 <!-- notes -->
-                <label>
-                    NOTES<span class="optional">- optional</span>
-                </label>
+                <label>NOTES</label>
                 <textarea name="notes" class="notes" placeholder="any additional notes..."></textarea>
 
                 <div class="confirm-add">

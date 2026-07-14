@@ -49,20 +49,10 @@ const cancelButton = document.querySelector('.confirm-add .cancel');
 
 // blank required input
 const titleErrorMsg = document.querySelector('.title-error-msg');
-const usernameErrorMsg = document.querySelector('.username-error-msg');
-const passwordErrorMsg = document.querySelector('.password-error-msg');
 
 // removes red outline when user types inside input
 titleInput.addEventListener('input', () => {
     titleInput.classList.remove('red-outline');
-});
-
-usernameInput.addEventListener('input', () => {
-    usernameInput.classList.remove('red-outline');
-});
-
-passwordInput.addEventListener('input', () => {
-    passwordInput.classList.remove('red-outline');
 });
 
 /*======================================
@@ -76,22 +66,10 @@ saveButton.addEventListener('submit', (e) => {
     clearBlankInputState();
 
     const titleEmpty = !titleInput.value;
-    const usernameEmpty = !usernameInput.value;
-    const passwordEmpty = !passwordInput.value;
 
-    if (titleEmpty || usernameEmpty || passwordEmpty) {
-        if (titleEmpty) {
-            titleInput.classList.add('red-outline');
-            titleErrorMsg.classList.add('show');
-        }
-        if (usernameEmpty) {
-            usernameInput.classList.add('red-outline');
-            usernameErrorMsg.classList.add('show');
-        }
-        if (passwordEmpty) {
-            passwordInput.classList.add('red-outline');
-            passwordErrorMsg.classList.add('show');
-        }
+    if (titleEmpty) {
+        titleInput.classList.add('red-outline');
+        titleErrorMsg.classList.add('show');
         return;
     }
 
@@ -201,12 +179,7 @@ cancelButton.addEventListener('click', () => {
 
 function clearBlankInputState() {
     titleErrorMsg.classList.remove('show');
-    usernameErrorMsg.classList.remove('show');
-    passwordErrorMsg.classList.remove('show');
-
     titleInput.classList.remove('red-outline');
-    usernameInput.classList.remove('red-outline');
-    passwordInput.classList.remove('red-outline');
 }
 
 function clearInputData() {
@@ -405,30 +378,38 @@ function renderCredential(data) {
     let html = `
         <div class="credential-img">${data.initial}</div>
         <h2 class="credential-title">${data.title}</h2>
-
-        <div class="data-display">
-            <img class="credential-icon" src="assets/user-gray.svg" alt="Error">
-            <div>
-                <p class="label">Username</p>
-                <p>${data.username}</p>
-            </div>
-        </div>
-
-        <div class="data-display">
-            <img class="credential-icon" src="assets/car-key-gray.svg" alt="Error">
-            <div>
-                <p class="label">Password</p>
-                <p class="password-hidden">••••••••</p>
-                <p class="password-showed">${data.password}</p>
-            </div>
-            <div class="show-box">
-                <img class="show-password-icon" src="assets/eye-gray.svg" alt="Error">
-            </div>
-            <div class="hide-box">
-                <img class="hide-password-icon" src="assets/eye-slash-gray.svg" alt="Error">
-            </div>
-        </div>
     `;
+
+    if (data.username) {
+        html += `
+            <div class="data-display">
+                <img class="credential-icon" src="assets/user-gray.svg" alt="Error">
+                <div>
+                    <p class="label">Username</p>
+                    <p>${data.username}</p>
+                </div>
+            </div>
+        `
+    }
+
+    if (data.password) {
+        html += `
+            <div class="data-display">
+                <img class="credential-icon" src="assets/car-key-gray.svg" alt="Error">
+                <div>
+                    <p class="label">Password</p>
+                    <p class="password-hidden">••••••••</p>
+                    <p class="password-showed">${data.password}</p>
+                </div>
+                <div class="show-box">
+                    <img class="show-password-icon" src="assets/eye-gray.svg" alt="Error">
+                </div>
+                <div class="hide-box">
+                    <img class="hide-password-icon" src="assets/eye-slash-gray.svg" alt="Error">
+                </div>
+            </div>
+        `
+    }
 
     if (data.url) {
         html += `
