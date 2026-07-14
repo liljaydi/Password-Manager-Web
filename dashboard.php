@@ -9,7 +9,7 @@ if (!isset($_SESSION['userId'])) {
 }
 
 $userId = $_SESSION['userId'];
-$getCredentials = "SELECT * FROM credentials WHERE user_id = $userId";
+$getCredentials = "SELECT * FROM credentials WHERE user_id = $userId ORDER BY id DESC";
 $result = mysqli_query($conn, $getCredentials);
 
 ?>
@@ -50,14 +50,6 @@ $result = mysqli_query($conn, $getCredentials);
                     <img class="lock-icon" src="assets/lock-white.svg" alt="Error">
                     <span>Passwords</span>
                 </a>
-
-                <!-- folder button -->
-                <!--
-                <a class="sidebar-link">
-                    <img class="folder-icon" src="assets/folder.svg" alt="Error">
-                    <span>Folder</span>
-                </a>
-                -->
 
                 <!-- favorites button -->
                 <a class="sidebar-link">

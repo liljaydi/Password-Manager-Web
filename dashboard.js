@@ -82,6 +82,7 @@ saveButton.addEventListener('submit', (e) => {
         }
 
         const row = createAccountRow(data);
+        handleRowClick(row);
 
         const menuBtn = row.querySelector('.action-menu-btn');
         const actionMenu = row.querySelector('.action-menu');
@@ -124,7 +125,7 @@ function createAccountRow(data) {
         </div>
     `
 
-    document.querySelector('.account-list').appendChild(row);
+    document.querySelector('.account-list').prepend(row);
 
     row.addEventListener('click', () => {
         handleRowClick(row);
