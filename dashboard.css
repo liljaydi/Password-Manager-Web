@@ -32,6 +32,13 @@
     --space-xl: 3rem;      /* 48px */
 }
 
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -49,17 +56,22 @@ body {
 }
 
 nav {
-    padding: 16px 12px;
+    padding: 16px 20px 18px;
     width: 290px;
     flex-shrink: 0;
     border-right: 1px solid #2a2a2f;
     height: 100vh;
     background-color: var(--sidebar);
+    display: flex;
+    flex-direction: column;
 
-    transition: width 0.2s ease;
+    transition: 
+    width 0.2s ease,
+    padding 0.2s ease;
 }
 
 nav.hide {
+    padding: 16px 12px 18px;
     width: 62px;
 }
 
@@ -179,6 +191,9 @@ nav .active {
     width: 20px;
     margin-right: 6px;
     transform: none;
+    position: relative;
+    left: 0.5px;
+    bottom: 1px;
 }
 
 .sidebar-link .folder-icon {
@@ -196,6 +211,9 @@ nav .active {
     transition: color 0.2s ease;
     flex-shrink: 0;
     transform: none;
+
+    position: relative;
+    left: 1px;
 }
 
 .sidebar-link:hover .star-icon {
@@ -233,9 +251,9 @@ nav .active {
     border-radius: 14px;
     background-color: var(--card);
     color: var(--foreground);
-    font-family: inherit;
     outline: none;
     width: 300px;
+    font-size: 13px;
 
     transition: background-color 0.075s ease;
 }
@@ -258,6 +276,7 @@ nav .active {
     background-color: var(--primary);
     color: var(--primary-foreground);
     font-weight: 500;
+    font-size: 13px;
 
     white-space: nowrap;
 }
@@ -295,11 +314,12 @@ nav .active {
 /* add button empty state */
 .empty-state .add-button {
     padding: 8px 16px;
-    border-radius: 6px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
     background-color: var(--primary);
     color: var(--accent-foreground);
+    font-size: 14px;
 
     white-space: nowrap;
 }
@@ -477,6 +497,7 @@ nav .active {
     border: none;
     cursor: pointer;
     border-radius: 10px;
+    font-size: var(--text-sm);
 
     transition: background-color 0.2s ease;
 }
@@ -624,7 +645,8 @@ nav .active {
 }
 
 .account-row .row-title {
-    font-size: var(--text-sm);
+    font-size: 15px;
+    font-weight: 500;
     white-space: nowrap;
 }
 
@@ -971,5 +993,199 @@ nav .active {
 
 .confirm-delete .delete {
     background-color: var(--destructive);
+    color: var(--foreground);
+}
+
+/*=======================
+
+    logged-in account
+
+=======================*/
+
+.profile-container {
+    margin-top: auto;
+    padding: 14px;
+    border-radius: 18px;
+    background-color: var(--card);
+    border: 1px solid #2a2a2f;
+
+    transition: padding 0.2s ease;
+}
+
+.profile-container.collapse {
+    padding: 0px 0px 14px;
+    border: none;
+    background-color: var(--sidebar);
+}
+
+.login-details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.login-details.collapse {
+    margin-bottom: 0px;
+}
+
+.login-img {
+    cursor: default;
+    background-color: var(--primary);
+    border-radius: 50%;
+    padding: 6px;
+    font-weight: 500;
+    min-height: 35px;
+    min-width: 35px;
+    max-height: 35px;
+    max-width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-img.clickable {
+    cursor: pointer;
+}
+
+.name-username-container {
+    display: block;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.name-username-container.collapse {
+    display: none;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.login-name,
+.login-username {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.name-username-container .login-name {
+    font-size: var(--text-sm);
+    font-weight: 500;
+}
+
+.name-username-container .login-username {
+    font-size: var(--text-xs);
+    color: var(--muted-foreground);
+}
+
+.logout {
+    display: block; 
+    background-color: var(--background);
+    color: var(--foreground);
+    padding: 5px;
+    border-radius: 12px;
+    width: calc(100% - (var(--space-xs)) * 2);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    gap: var(--space-xxs);
+    border: 1px solid #2a2a2f;
+    margin: 0px var(--space-xs);
+    cursor: pointer;
+
+    transition: background-color 0.2s ease;
+}
+
+.logout.collapse {
+    display: none;
+}
+
+.logout:hover {
+    background-color: var(--accent);
+}
+
+.logout-icon {
+    width: 14px;
+}
+
+.logout p {
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: var(--text-xs);
+    font-weight: 500;
+}
+
+.logout-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    right: 50%;
+    background-color: var(--background);
+    border-radius: 14px;
+    padding: 20px;
+    padding: 20px;
+    z-index: 10100;
+    max-width: 300px;
+    min-width: 300px;
+
+    transform: translate(50%, -50%);
+}
+
+.logout-modal .logout-message {
+    text-align: center;
+    margin: var(--space-xs) var(--space-xl) 18px;
+    font-weight: 600;
+}
+
+.logout-modal.show {
+    display: block;
+}
+
+.login-details.logout-details {
+    background-color: var(--card);
+    padding: 10px;
+    border-radius: 12px;
+    margin-bottom: 18px;
+}
+
+/*============================
+
+    confirm logout buttons
+
+============================*/
+
+.confirm-logout {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.confirm-logout button {
+    flex: 1;
+    border: none;
+    padding: var(--space-xs);
+    border-radius: 18px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.confirm-logout .confirm-cancel {
+    outline: 1px solid #2a2a2f;
+    background-color: var(--background);
+    color: var(--muted-foreground);
+
+    transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.confirm-logout .confirm-cancel:hover {
+    outline: none;
+    color: var(--foreground);
+    background-color: oklch(26.962% 0.02539 268.311 / 0.676);
+}
+
+.confirm-logout .confirm-logout-user {
+    background-color: var(--primary);
     color: var(--foreground);
 }

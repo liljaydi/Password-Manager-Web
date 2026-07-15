@@ -7,6 +7,7 @@
 const unfocus = document.querySelector('.unfocus');
 const accountList = document.querySelector('.account-list');
 const emptyState = document.querySelector('.empty-state');
+const logout = document.querySelector('.logout');
 
 let credentialOpen = false;
 let previousId = null;
@@ -45,6 +46,7 @@ addButton.forEach((button) => {
 unfocus.addEventListener('click', () => {
     closeAddPanel();
     closeDeleteModal();
+    closeLogoutModal();
 });
 
 closeAddPanelBtn.addEventListener('click', closeAddPanel);
@@ -223,10 +225,21 @@ const logoName = document.querySelector('.nav-heading p');
 const navigationLabel = document.querySelectorAll('.sidebar-content a span');
 const mainHeading = document.getElementById('main-heading');
 
+const loginDetails = document.querySelector('.login-details');
+const profileContainer = document.querySelector('.profile-container');
+const nameUsernameContainer = document.querySelector('.name-username-container');
+const loginImg = document.querySelector('.login-img');
+
 toggleLeft.classList.add('show');
 toggleRight.classList.remove('show');
 toggleLeft.addEventListener('click', navClose);
 toggleRight.addEventListener('click', navOpen);
+
+loginImg.addEventListener('click', () => {
+    if (loginImg.classList.contains('clickable')) {
+        navOpen();
+    }
+});
 
 function navClose() {
     sidebar.classList.add('hide');
@@ -252,6 +265,13 @@ function navClose() {
         accountList.classList.remove('open');
         accountList.classList.add('close');
     }
+
+    // profile details
+    logout.classList.add('collapse');
+    loginDetails.classList.add('collapse');
+    profileContainer.classList.add('collapse');
+    nameUsernameContainer.classList.add('collapse');
+    loginImg.classList.add('clickable');
 }
 
 function navOpen() {
@@ -278,6 +298,13 @@ function navOpen() {
         accountList.classList.remove('open');
         accountList.classList.add('close');
     }
+
+    // profile details
+    logout.classList.remove('collapse');
+    loginDetails.classList.remove('collapse');
+    profileContainer.classList.remove('collapse');
+    nameUsernameContainer.classList.remove('collapse');
+    loginImg.classList.remove('clickable');
 }
 
 /*=========================
@@ -622,3 +649,41 @@ function renderDeleteDetails(data) {
         </div>
     `
 }
+
+/*===================
+
+    Logout modal
+
+===================*/
+
+const logoutModal = document.querySelector('.logout-modal');
+const logoutCancel = document.querySelector('.confirm-logout .confirm-cancel');
+const logoutContinue = document.querySelector('.confirm-logout .confirm-logout-user');
+
+function closeLogoutModal() {
+    logoutModal.classList.remove('show');
+    unfocus.classList.remove('show');
+}
+
+logout.addEventListener('click', () => {
+    unfocus.classList.add('show');
+    logoutModal.classList.add('show');
+});
+
+logoutCancel.addEventListener('click', closeLogoutModal);
+
+logoutContinue.addEventListener('click', () => {
+
+    const formdata = new FormData();
+    formdata.append("action", "logout");
+
+    sendRequest(formdata).then(data => {
+        if (!data.success) {
+            console.log("logout failed");
+            return;
+        }
+        window.location.href = "index.php";
+    });
+
+});
+

@@ -20,6 +20,8 @@ if ($action == "login") {
     getCredential();
 } else if ($action == "deleteCredential") {
     deleteCredential();
+} else if ($action == "logout") {
+    logout();
 }
 
 // validate login
@@ -38,6 +40,8 @@ function login() {
     } else {
         if ($user['password'] == $password) {
             $_SESSION['userId'] = $user['id'];
+            $_SESSION['loginName'] = $user['name'];
+            $_SESSION['loginUsername'] = $user['email'];
             echo "login successful";
         } else {
             echo "incorrect password";
@@ -69,6 +73,8 @@ function signup() {
 
     if ($result) {
         $_SESSION['userId'] = mysqli_insert_id($conn);
+        $_SESSION['loginName'] = $name;
+        $_SESSION['loginUsername'] = $email;
         echo "signup successful";
     } else {
         echo "signup unsuccessful";
@@ -147,6 +153,18 @@ function deleteCredential() {
     $result = mysqli_query($conn, $deleteCredential);
 
     if ($result) {
+        echo json_encode([
+            "success" => true
+        ]);
+    } else {
+        echo json_encode([
+            "success" => false
+        ]);
+    }
+}
+
+function logout() {
+    if (session_destroy()) {
         echo json_encode([
             "success" => true
         ]);

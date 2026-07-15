@@ -9,8 +9,12 @@ if (!isset($_SESSION['userId'])) {
 }
 
 $userId = $_SESSION['userId'];
+$loginName = $_SESSION['loginName'];
+$loginUsername = $_SESSION['loginUsername'];
 $getCredentials = "SELECT * FROM credentials WHERE user_id = $userId ORDER BY id DESC";
 $result = mysqli_query($conn, $getCredentials);
+
+$loginNameInitial = strtoupper(mb_substr($loginName, 0, 2));
 
 ?>
 
@@ -61,6 +65,35 @@ $result = mysqli_query($conn, $getCredentials);
                     <span>Favorites</span>
                 </a>
             </div>
+
+            <div class="profile-container">
+                <div class="login-details">
+                    <div class="login-img"><?= $loginNameInitial ?? '' ?></div>
+                    <div class="name-username-container">
+                        <p class="login-name"><?= $loginName ?? '' ?></p>
+                        <p class="login-username"><?= $loginUsername ?? '' ?></p>
+                    </div>
+                </div>
+                <div class="logout">
+                    <img class="logout-icon" src="assets/arrow-out-right-square-half.svg" alt="Error">
+                    <p>Log out</p>
+                </div>
+            </div>
+
+            <div class="logout-modal">
+                <p class="logout-message">Are you sure you want to log out?</p>
+                <div class="login-details logout-details">
+                    <div class="login-img"><?= $loginNameInitial ?? '' ?></div>
+                    <div class="name-username-container">
+                        <p class="login-name"><?= $loginName ?? '' ?></p>
+                        <p class="login-username"><?= $loginUsername ?? '' ?></p>
+                    </div>
+                </div>
+                <div class="confirm-logout">
+                    <button class="confirm-cancel">cancel</button>
+                    <button class="confirm-logout-user">Log out</button>
+                </div>
+            </div>
         </nav>
 
         <!-- main content -->
@@ -91,6 +124,7 @@ $result = mysqli_query($conn, $getCredentials);
 
                     <?php
                     while ($credential = mysqli_fetch_assoc($result)) {
+                        
                         $initial = strtoupper(mb_substr($credential['title'], 0, 2));
 
                         echo "
