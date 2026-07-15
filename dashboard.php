@@ -48,12 +48,16 @@ $result = mysqli_query($conn, $getCredentials);
                 <!-- password button -->
                 <a class="active">
                     <img class="lock-icon" src="assets/lock-white.svg" alt="Error">
-                    <span>Passwords</span>
+                    <span>Accounts</span>
                 </a>
 
                 <!-- favorites button -->
                 <a class="sidebar-link">
-                    <img class="star-icon" src="assets/folder-star.svg" alt="Error">
+                    <!--<img class="star-icon" src="assets/folder-star.svg" alt="Error">-->
+                    <svg class="star-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20 4h-8.59L10 2.59C9.62 2.21 9.12 2 8.59 2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 14H4V6h16z"/>
+                        <path d="M10.72 10.59 8 10.82l2.12 2.12L9.18 16 12 14.12 14.82 16l-.94-3.06L16 10.82l-2.72-.23L12 8z"/>
+                    </svg>
                     <span>Favorites</span>
                 </a>
             </div>
@@ -63,7 +67,7 @@ $result = mysqli_query($conn, $getCredentials);
         <main>
             <div id="main-heading">
                 <!-- main title -->
-                <h3 class="content-title">All Passwords</h3>
+                <h3 class="content-title">All Accounts</h3>
 
                 <!-- search input -->
                 <input type="search" class="search-bar" placeholder="Search">
@@ -143,14 +147,14 @@ $result = mysqli_query($conn, $getCredentials);
         <!-- add panel -->
         <aside id="add-panel">
             <img class="close-add-panel-btn" src="assets/x-muted.svg" alt="Error">
-            <h3>Add New Password</h3>
-            <p class="sub-txt">Fill in the details for your new password</p>
+            <h3>Add New Account</h3>
+            <p class="sub-txt">Fill in the details for your new account</p>
 
             <form class="add-form">
                 <!-- title -->
                 <label>
                     TITLE<span class="required-dot">*</span>
-                    <span class="title-error-msg">Please enter a password title</span>
+                    <span class="title-error-msg">Please enter an account title</span>
                 </label>
                 <input name="title" class="title" type="text" placeholder="e.g. Facebook">
             
@@ -172,7 +176,7 @@ $result = mysqli_query($conn, $getCredentials);
 
                 <div class="confirm-add">
                     <button type="button" class="cancel">Cancel</button>
-                    <button type="submit" class="save">Save Password</button>
+                    <button type="submit" class="save">Save Account</button>
                 </div>
             </form>
         </aside>  

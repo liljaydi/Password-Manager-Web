@@ -143,12 +143,12 @@ nav .active {
     align-items: center;
     background-color: var(--primary);
     padding: 8px;
-    border-radius: 12px;
+    border-radius: 14px;
     text-decoration: none;
     color: var(--primary-foreground);
-    font-size: var(--text-sm);
+    font-size: 14px;
     font-weight: 500;
-    height: 36px;
+    height: 38px;
     cursor: pointer;
 }
 
@@ -156,13 +156,13 @@ nav .active {
 .sidebar-link {
     display: flex;
     align-items: center;
-    padding: var(--space-xs);
-    border-radius: 12px;
+    padding: 8px;
+    border-radius: 14px;
     text-decoration: none;
     color: var(--muted-foreground);
-    font-size: var(--text-sm);
+    font-size: 14px;
     font-weight: 500;
-    height: 36px;
+    height: 38px;
     cursor: pointer;
 
     transition: 
@@ -192,7 +192,14 @@ nav .active {
     width: 18px;
     margin-right: 7px;
     margin-left: 1px;
+    color: var(--muted-foreground);
+    transition: color 0.2s ease;
+    flex-shrink: 0;
     transform: none;
+}
+
+.sidebar-link:hover .star-icon {
+    color: var(--foreground);
 }
 
 .sidebar-content a span.hide {
@@ -206,6 +213,7 @@ nav .active {
     gap: 14px;
     background-color: var(--background);
     padding: var(--space-xl) var(--space-l) var(--space-m);
+    max-height: 108px;
 
     transition: padding 0.2s ease;
 }
