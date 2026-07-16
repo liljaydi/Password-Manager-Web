@@ -49,20 +49,18 @@ $loginNameInitial = strtoupper(mb_substr($loginName, 0, 2));
             </div>
 
             <div class="sidebar-content">
+                <!-- favorites button -->
+                <a class="sidebar-link">
+                    <svg class="dashboard-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg">
+                        <path d="M20 11h-6c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-8c0-.55-.45-1-1-1m-1 8h-4v-6h4zm-9-4H4c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1m-1 4H5v-2h4zM20 3h-6c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1m-1 4h-4V5h4zm-9-4H4c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1m-1 8H5V5h4z"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                
                 <!-- password button -->
                 <a class="active">
                     <img class="lock-icon" src="assets/lock-white.svg" alt="Error">
                     <span>Accounts</span>
-                </a>
-
-                <!-- favorites button -->
-                <a class="sidebar-link">
-                    <!--<img class="star-icon" src="assets/folder-star.svg" alt="Error">-->
-                    <svg class="star-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20 4h-8.59L10 2.59C9.62 2.21 9.12 2 8.59 2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 14H4V6h16z"/>
-                        <path d="M10.72 10.59 8 10.82l2.12 2.12L9.18 16 12 14.12 14.82 16l-.94-3.06L16 10.82l-2.72-.23L12 8z"/>
-                    </svg>
-                    <span>Favorites</span>
                 </a>
             </div>
 

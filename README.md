@@ -5,8 +5,8 @@ A simple password manager to store and manage your online account credentials.
 ### Login
 ![Login](screenshots/login.png)
 
-### Accounts Dashboard
-![Accounts Dashboard](screenshots/dashboard.png)
+### Accounts
+![Accounts](screenshots/accounts.png)
 
 ### Add Account Panel
 ![Add Account Panel](screenshots/add-panel.png)
@@ -17,7 +17,7 @@ A simple password manager to store and manage your online account credentials.
 - View all saved accounts in one place
 - Add new accounts instantly
 - Delete accounts
-- Favorites section *(in progress)*
+- Dashboard section *(in progress)*
 - Edit account *(in progress)*
 
 ## Tech Stack

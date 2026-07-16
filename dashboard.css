@@ -203,7 +203,7 @@ nav .active {
     transform: none;
 }
 
-.sidebar-link .star-icon {
+.sidebar-link .dashboard-icon {
     width: 18px;
     margin-right: 7px;
     margin-left: 1px;
@@ -216,7 +216,7 @@ nav .active {
     left: 1px;
 }
 
-.sidebar-link:hover .star-icon {
+.sidebar-link:hover .dashboard-icon {
     color: var(--foreground);
 }
 
