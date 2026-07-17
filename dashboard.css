@@ -1208,3 +1208,9 @@ nav .active {
     width: 18px;
     cursor: pointer;
 }
+
+@media (max-width: 768px) {
+    nav {
+        display: none;
+    }
+}
