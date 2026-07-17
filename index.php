@@ -31,7 +31,7 @@
 
                 <div class="feature-info">
                     <div class="icon-box">
-                        <img class="icon" src="assets/lock.svg" alt="error">
+                        <img class="icon" src="assets/lock-blue.svg" alt="error">
                     </div>
                     <div>
                         <h3>End-to-end encrypted</h3>

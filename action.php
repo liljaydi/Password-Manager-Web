@@ -28,7 +28,9 @@ if ($action == "login") {
 function login() {
     global $conn;
     $email = $_POST['email'];
-    $password = $_POST['password'];
+    $userPassword = $_POST['password'];
+
+    $_SESSION['key'] = hash('sha256', $userPassword, true);
 
     $findEmail = "SELECT * FROM users WHERE email = '$email'";
     $result = mysqli_query($conn, $findEmail);
@@ -38,7 +40,7 @@ function login() {
     if (!$user) {
         echo "account does not exist";
     } else {
-        if ($user['password'] == $password) {
+        if (password_verify($userPassword, $user['password'])) {
             $_SESSION['userId'] = $user['id'];
             $_SESSION['loginName'] = $user['name'];
             $_SESSION['loginUsername'] = $user['email'];
@@ -54,7 +56,10 @@ function signup() {
     global $conn;
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $password = $_POST['password'];
+    $userPassword = $_POST['password'];
+    $hashedPassword = password_hash($userPassword, PASSWORD_DEFAULT);
+
+    $_SESSION['key'] = hash('sha256', $userPassword, true);
 
     // check for duplicates
     $findEmail = "SELECT * FROM users WHERE email = '$email'";
@@ -67,7 +72,7 @@ function signup() {
     }
 
     $addUser = "INSERT INTO users (name, email, password)
-    VALUES ('$name', '$email', '$password')";
+    VALUES ('$name', '$email', '$hashedPassword')";
 
     $result = mysqli_query($conn, $addUser);
 
@@ -92,10 +97,63 @@ function addCredential() {
     $url = $_POST['url'];
     $notes = $_POST['notes'];
 
-    $addAccount = "INSERT INTO credentials (user_id, title, username, password, url, notes)
-    VALUES ('$userId', '$title', '$username', '$password', '$url', '$notes')";
+    $iv = random_bytes(16);
 
-    $result = mysqli_query($conn, $addAccount);
+    /*
+    $encryptedPassword = openssl_encrypt(
+        $password,
+        'AES-256-CBC',
+        $_SESSION['key'],
+        OPENSSL_RAW_DATA,
+        $iv
+    );
+
+    $addAccount = "INSERT INTO credentials (user_id, title, username, password, iv, url, notes)
+    VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($addAccount);
+
+    $stmt->bind_param(
+        "issssss",
+        $userId,
+        $title,
+        $username,
+        $encryptedPassword,
+        $iv,
+        $url,
+        $notes
+    );
+    */
+
+    $encryptedPassword = openssl_encrypt(
+        $password,
+        'AES-256-CBC',
+        $_SESSION['key'],
+        OPENSSL_RAW_DATA,
+        $iv
+    );
+
+    $addAccount = "INSERT INTO credentials (user_id, title, username, password, iv, url, notes)
+    VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($addAccount);
+
+    // convert to hex string before storing
+    $encryptedHex = bin2hex($encryptedPassword);
+    $ivHex = bin2hex($iv);
+
+    $stmt->bind_param(
+        "issssss",
+        $userId,
+        $title,
+        $username,
+        $encryptedHex,  // now a safe hex string
+        $ivHex,         // now a safe hex string
+        $url,
+        $notes
+    );
+
+    $result = $stmt->execute();
 
     if ($result) {
         $newId = mysqli_insert_id($conn);
@@ -114,7 +172,7 @@ function addCredential() {
     }
 } 
 
-// return full credential
+/*
 function getCredential() {
     global $conn;
     $id = $_POST['id'];
@@ -132,6 +190,49 @@ function getCredential() {
             "title" => $credential['title'],
             "username" => $credential['username'],
             "password" => $credential['password'],
+            "url" => $credential['url'],
+            "notes" => $credential['notes']
+        ]);
+    } else {
+        echo json_encode([
+            "success" => false
+        ]);
+    }
+}
+*/
+
+function getCredential() {
+    global $conn;
+    $id = $_POST['id'];
+    $userId = $_SESSION['userId'];
+
+    // use prepared statement here too - your current way is unsafe
+    $stmt = $conn->prepare("SELECT * FROM credentials WHERE id = ? AND user_id = ?");
+    $stmt->bind_param("ii", $id, $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $credential = $result->fetch_assoc();
+
+    if ($credential) {
+        // convert hex back to binary
+        $encryptedPassword = hex2bin($credential['password']);
+        $iv = hex2bin($credential['iv']);
+
+        // decrypt
+        $decryptedPassword = openssl_decrypt(
+            $encryptedPassword,
+            'AES-256-CBC',
+            $_SESSION['key'],
+            OPENSSL_RAW_DATA,
+            $iv
+        );
+
+        echo json_encode([
+            "success" => true,
+            "initial" => strtoupper(mb_substr($credential['title'], 0, 2)),
+            "title" => $credential['title'],
+            "username" => $credential['username'],
+            "password" => $decryptedPassword, // decrypted plain text
             "url" => $credential['url'],
             "notes" => $credential['notes']
         ]);

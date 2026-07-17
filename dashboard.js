@@ -20,6 +20,7 @@ let deleteId = null;
 ===============*/
 
 function sendRequest(formdata) {
+    console.log("request sent to database");
     return fetch("action.php", {
         method: "POST",
         body: formdata
