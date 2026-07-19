@@ -2,14 +2,9 @@
 
 A simple password manager to store and manage your online account credentials.
 
-### Login
-![Login](screenshots/login.png)
+## Live Demo
 
-### Accounts
-![Accounts](screenshots/accounts.png)
-
-### Add Account Panel
-![Add Account Panel](screenshots/add-panel.png)
+https://myaccess.rf.gd
 
 ## Features
 
